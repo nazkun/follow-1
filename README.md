@@ -45,7 +45,7 @@ Boi, this is gonna be hard.
 - Create a file named `Procfile` with the contents `app: python3 follow.py`
 - Login to Heroku
 - New App
-- Push to Heroku
+- Push to Heroku  
 You might find that the database (very amazing DB I know) is periodically cleared.  
 Heroku restarts your dyno at least once per day (and deletes files).
 
