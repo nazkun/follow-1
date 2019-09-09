@@ -19,6 +19,7 @@ Used this userbot to spam in chats (or something) and now most of your alts dele
 ### Installation
 
 - `git clone https://gitlab.com/blankX/follow`
+- `cd follow`
 - Copy `sample.config.py` to `config.py` (`cp sample.config.py config.py`)
 - Edit `config.py` (`nano config.py`)
 - Install dependencies (`pip3 install -r requirements.txt`)
