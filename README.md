@@ -1,8 +1,6 @@
 ## follow
 
-2nd* open-source multi client Telegram Userbot ([friendly-tg](https://github.com/friendly-tg/friendly-tg) beat me)
-
-* That I know of
+2nd (that I know of) open-source multi client Telegram Userbot ([friendly-tg](https://github.com/friendly-tg/friendly-tg) beat me)
 
 ## DISCLAIMER
 
@@ -123,5 +121,5 @@ Thanks to:
   - Making me paranoid to include trust levels
 - [Intellivoid](https://intellivoid.info) for Coffeehouse/Lydia
 - [Hackintosh](https://t.me/hackintosh5) for the `loop.run_in_executor` code
-- (omg im gonna so cringe)
+- (omg im gonna so cringe)  
   The Adventure Time episodes Preboot and Reboot (instant cringe) for inspiring me to make the userbot (imma stop writing before i cringe more
