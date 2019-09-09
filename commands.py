@@ -345,6 +345,9 @@ async def lydia_respond(e):
 	async with e.client.action(e.chat_id, 'typing'):
 		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
 		respond = await helper.lydia_think(e.client.loop, session, e.text)
+		# If lydia is disabled while it's processing,
+		if e.from_id in helper.db['nolydia']:
+			return
 		await e.respond(html.escape(respond), reply_to=None if not e.is_reply else e.id)
 
 @helper.register(strings.cmd_info)
