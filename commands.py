@@ -1,0 +1,443 @@
+import html
+import asyncio
+import random
+import follow
+from io import BytesIO
+from traceback import format_exc
+from telethon import utils, events, functions, types, errors
+try:
+	from speedtest import Speedtest
+	speedtest_enabled = True
+except ImportError:
+	speedtest_enabled = False
+import config
+import helper
+import strings
+from classes import flags
+
+@helper.register(strings.cmd_help_text)
+async def help_text(e):
+	text = helper.give_help(e.client)
+	if config.help_as_file:
+		await e.reply(file=helper.memory_file('help.txt', text))
+	else:
+		await e.reply(text, link_preview=False)
+
+@helper.register(strings.cmd_deactivate, 10)
+async def deactivate(e):
+	await e.reply(strings.cmd_deactivate_respond)
+	helper.active = False
+
+@helper.register(strings.cmd_followers)
+async def followers(e):
+	await e.reply(await helper.list_followers())
+
+@helper.register(strings.cmd_send, 20)
+async def send(e):
+	if e.pattern_match.group(1):
+		clients = helper.give_client(helper.give_id(e.pattern_match.group(1)))
+		if clients is None:
+			await e.reply(strings.follow_who.format(e.pattern_match.group(1)))
+			return
+	else:
+		clients = [e.client]
+	chat = e.pattern_match.group(2)
+	text = e.pattern_match.group(3)
+	chat = helper.give_chat(chat, await e.get_chat())
+	for client in clients:
+		await client.send_message(chat, text)
+
+@helper.register(strings.cmd_join, 30)
+async def join(e):
+	if e.pattern_match.group(1):
+		clients = helper.give_client(helper.give_id(e.pattern_match.group(1)))
+		if clients is None:
+			await e.reply(strings.follow_who.format(e.pattern_match.group(1)))
+			return
+	else:
+		clients = [e.client]
+	chat = e.pattern_match.group(2)
+	chat = helper.give_chat(chat, await e.get_chat())
+	try:
+		invite_info = utils.resolve_invite_link(chat)
+	except Exception:
+		invite_info = (None, None, None)
+	for client in clients:
+		if invite_info[0] is None:
+			await client(functions.channels.JoinChannelRequest(chat))
+		else:
+			await client(functions.messages.ImportChatInviteRequest(chat))
+		try:
+			await e.reply(strings.cmd_join_respond)
+		except Exception:
+			pass
+
+@helper.register(strings.cmd_leave, 30)
+async def leave(e):
+	if e.pattern_match.group(1):
+		clients = helper.give_client(helper.give_id(e.pattern_match.group(1)))
+		if clients is None:
+			await e.reply(strings.follow_who.format(e.pattern_match.group(1)))
+			return
+	else:
+		clients = [e.client]
+	chat = e.pattern_match.group(2)
+	chat = helper.give_chat(chat, await e.get_chat())
+	try:
+		invite_info = utils.resolve_invite_link(chat)
+	except Exception:
+		invite_info = (None, None, None)
+	for client in clients:
+		if invite_info[0] is None:
+			await client(functions.channels.LeaveChannelRequest(chat))
+		else:
+			await client(functions.channels.LeaveChannelRequest(invite_info[1]))
+		try:
+			await e.reply(strings.cmd_leave_respond)
+		except Exception:
+			pass
+
+@helper.register(strings.cmd_speedtest, 10)
+async def speedtest(e):
+	if not speedtest_enabled:
+		await e.reply(strings.speedtest_disabled)
+		return
+	text = strings.cmd_speedtest_processing
+	reply = await e.reply(text)
+	speedtester = Speedtest()
+	speedtester.download()
+	text += strings.cmd_speedtest_upload
+	try:
+		await reply.edit(text)
+	except Exception:
+		pass
+	speedtester.upload()
+	url = speedtester.results.share()
+	await reply.delete()
+	await e.reply(strings.cmd_speedtest_respond.format(helper.blank_space, url))
+
+@helper.register(strings.cmd_cli, 50)
+async def cli(e):
+	command = e.pattern_match.group(1)
+	output = html.escape(helper.execute_cli(command))
+	if output:
+		await e.reply('<code>' + output + '</code>')
+	else:
+		await e.reply(strings.cmd_cli_respond)
+
+@helper.register(strings.cmd_notes_add, 10)
+async def notes_add(e):
+	note = e.pattern_match.group(1)
+	content = e.pattern_match.group(2)
+	helper.db['notes'][note] = content
+	helper.save_db()
+	await e.reply(strings.cmd_notes_add_respond)
+
+@helper.register(strings.cmd_notes_remove, 10)
+async def notes_remove(e):
+	note = e.pattern_match.group(1)
+	try:
+		helper.db['notes'].pop(note)
+	except KeyError:
+		await e.reply(strings.cmd_notes_failed.format(note))
+	else:
+		helper.save_db()
+		await e.reply(strings.cmd_notes_remove_respond)
+
+@helper.register(strings.cmd_notes)
+async def notes(e):
+	note = e.pattern_match.group(1)
+	try:
+		await e.reply(helper.db['notes'][note])
+	except KeyError:
+		await e.reply(strings.cmd_notes_failed.format(note))
+
+@helper.register(strings.cmd_notes_list)
+async def notes_list(e):
+	notes = ', '.join(helper.db['notes'].keys())
+	await e.reply(strings.cmd_notes_list_respond.format(notes))
+
+@helper.register(strings.cmd_execnotes_add, 50)
+async def execnotes_add(e):
+	note = e.pattern_match.group(1)
+	content = e.pattern_match.group(2)
+	helper.db['execnotes'][note] = content
+	helper.save_db()
+	await e.reply(strings.cmd_execnotes_add_respond)
+
+@helper.register(strings.cmd_execnotes_remove, 50)
+async def execnotes_remove(e):
+	note = e.pattern_match.group(1)
+	try:
+		helper.db['execnotes'].pop(note)
+	except KeyError:
+		await e.reply(strings.cmd_execnotes_failed.format(note))
+	else:
+		helper.save_db()
+		await e.reply(strings.cmd_execnotes_remove_respond)
+
+@helper.register(strings.cmd_execnotes)
+async def execnotes(e):
+	note = e.pattern_match.group(1)
+	try:
+		code = helper.db['execnotes'][note]
+	except KeyError:
+		await e.reply(strings.cmd_execnotes_failed.format(note))
+	else:
+#		This code is stolen from Twittie (https://t.me/twitface)
+		exec(
+			f'async def __ex(e, r, rr): ' +
+			''.join(f'\n {l}'for l in code.split('\n'))
+		)
+		r = await e.reply(strings.cmd_execnotes_processing)
+		ret = await locals()['__ex'](e, await e.get_reply_message(), r)
+		text = strings.cmd_execnotes_respond
+		if ret is not None:
+			text = strings.cmd_execnotes_returned.format(html.escape(str(ret)))
+		try:
+			await r.edit(text)
+		except Exception:
+			pass
+
+@helper.register(strings.cmd_execnotes_show)
+async def execnotes_show(e):
+	note = e.pattern_match.group(1)
+	try:
+		await e.reply('<code>' + helper.db['execnotes'][note] + '</code>')
+	except KeyError:
+		await e.reply(strings.cmd_execnotes_failed.format(note))
+
+@helper.register(strings.cmd_execnotes_list)
+async def execnotes_list(e):
+	execnotes = ', '.join(helper.db['execnotes'].keys())
+	await e.reply(strings.cmd_execnotes_list_respond.format(execnotes))
+
+@helper.register(strings.cmd_restart, 10)
+async def restart(e):
+	if not e.pattern_match.group(1):
+		r = await e.reply(strings.cmd_restart_respond)
+	else:
+		r = await e.reply(strings.cmd_restart_restarted)
+	for fwlr in helper.followers:
+		if fwlr.me.id == e.from_id:
+			helper.restart = [str(fwlr.identifier.int_id),
+			str(e.chat_id), str(r.id)]
+	if e.pattern_match.group(1):
+		helper.restart = ['hi']
+	follow.mained = True
+	helper.active = False
+
+@helper.register(strings.cmd_exec_py, 50)
+async def exec_py(e):
+	code = e.pattern_match.group(1)
+#	This code is stolen from Twittie (https://t.me/twitface)
+	exec(
+		f'async def __ex(e, r, rr): ' +
+		''.join(f'\n {l}'for l in code.split('\n'))
+	)
+	r = await e.reply(strings.cmd_exec_py_processing)
+	ret = await locals()['__ex'](e, await e.get_reply_message(), r)
+	text = strings.cmd_exec_py_respond
+	if ret is not None:
+		text = strings.cmd_exec_py_returned.format(html.escape(str(ret)))
+	try:
+		await r.edit(text)
+	except errors.MessageIdInvalidError:
+		pass
+
+@helper.register(strings.cmd_insult)
+async def insult(e):
+	await e.reply(helper.insult(e.pattern_match.group(1)))
+
+@helper.register(strings.cmd_dcinfo)
+async def dcinfo(e):
+	if e.pattern_match.group(1):
+		clients = helper.give_client(helper.give_id(e.pattern_match.group(1)))
+		if not clients:
+			await e.reply(strings.follow_who.format(e.pattern_match.group(1)))
+			return
+	else:
+		clients = [e.client]
+	for client in clients:
+		await e.reply('<code>' +
+		(await client(functions.help.GetNearestDcRequest())).stringify() +
+		'</code>')
+
+@helper.register(strings.cmd_cas)
+async def cas(e):
+	r = await e.reply(strings.cmd_cas_processing)
+	await r.edit(helper.check_cas(e.pattern_match.group(1)))
+
+@helper.register(strings.cmd_afk)
+async def afk(e):
+	helper.afk = e.pattern_match.group(1)
+	await e.reply(strings.cmd_afk_respond)
+
+@helper.register(strings.cmd_unafk)
+async def unafk(e):
+	helper.afk = None
+	helper.afk_responses = dict()
+	await e.reply(strings.cmd_unafk_respond)
+
+@helper.register(events.NewMessage(incoming=True))
+async def respond_to_afk(e):
+	if e.is_private and helper.afk:
+		try:
+			times = helper.afk_responses[e.from_id]
+		except KeyError:
+			times = 0
+			helper.afk_responses[e.from_id] = times
+		if not times % 5:
+			helper.afk_responses[e.from_id] += 1
+			user = await e.get_sender()
+			if user.verified or user.bot:
+				return
+			await e.reply(strings.im_afk.format(helper.afk))
+
+@helper.register(events.NewMessage(incoming=True), flags=flags(True, crawler=True))
+async def crawler(e):
+	pattern_match = helper.invite_re.findall(e.text)
+	for invite in set(pattern_match):
+		info = utils.resolve_invite_link(invite)
+		if info[1]:
+			try:
+				chat_info = await e.client(functions.messages.CheckChatInviteRequest(invite))
+				if isinstance(chat_info, (types.ChatInviteAlready, types.ChatInvite)):
+					await asyncio.sleep(random.randint(0, 10))
+					await e.client(functions.messages.ImportChatInviteRequest(invite))
+					await e.client.send_message(config.log_chat, strings.crawler_joined.format(invite=invite,
+					user=await e.get_sender(), e=e,
+					sanitised_cid=str(e.chat_id)[4:]))
+			except errors.UserAlreadyParticipantError:
+				pass
+			except Exception:
+				fyle = BytesIO()
+				fyle.name = 'exception.txt'
+				fyle.write(bytes(format_exc(), 'utf-8'))
+				fyle.seek(0)
+				await e.client.send_message(config.log_chat, strings.crawler_failed.format(invite=invite),
+				file=fyle)
+
+@helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
+async def crawler_edited(e):
+	await crawler(e)
+
+@helper.register(strings.cmd_json)
+async def json(e):
+	r = await e.get_reply_message()
+	if not r:
+		r = e
+#	This code is also stolen from Twittie (t.me/twitface)
+	js = r.to_json(indent=4, sort_keys=True)
+	await e.reply('<code>' +
+	html.escape(str(helper.traverse_json(js, e.pattern_match.group(1)))) +
+	'</code>')
+
+@helper.register(events.NewMessage(incoming=True), flags=flags(True, lydia=True))
+async def lydia_respond(e):
+	if not e.is_private:
+		return
+	if e.from_id in helper.db['nolydia']:
+		return
+	chat = await e.get_sender()
+	if chat.verified or chat.bot:
+		return
+	async with e.client.action(e.chat_id, 'typing'):
+		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
+		respond = await helper.lydia_think(e.client.loop, session, e.text)
+		await e.respond(html.escape(respond), reply_to=None if not e.is_reply else e.id)
+
+@helper.register(strings.cmd_info)
+async def info(e):
+	async def afc(fwlr):
+		if await fwlr.online():
+			afc.fwlr_count += 1
+	afc.fwlr_count = 0
+	await asyncio.wait([
+		afc(fwlr)
+		for fwlr in helper.followers
+	])
+	for fwlr in helper.followers:
+		if fwlr.me.id == e.from_id:
+			id = fwlr
+	await e.reply(strings.cmd_info_respond.format(
+	fwlr_count=afc.fwlr_count, fwlr=id, source=strings.source))
+
+@helper.register(strings.cmd_lydia_enable)
+async def lydia_enable(e):
+	if not config.lydia_api:
+		await e.reply(strings.no_lydia)
+		return
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			await e.reply(strings.user_required)
+			return
+		user = (await e.client.get_input_entity(user)).user_id
+	if user in helper.db['nolydia']:
+		helper.db['nolydia'].remove(user)
+		helper.save_db()
+		await e.reply(strings.cmd_lydia_enable_respond)
+	else:
+		await e.reply(strings.cmd_lydia_enable_already)
+
+@helper.register(strings.cmd_lydia_disable)
+async def lydia_disable(e):
+	if not config.lydia_api:
+		await e.reply(strings.no_lydia)
+		return
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			await e.reply(strings.user_required)
+			return
+		user = (await e.client.get_input_entity(user)).user_id
+	if user not in helper.db['nolydia']:
+		helper.db['nolydia'].append(user)
+		helper.save_db()
+		await e.reply(strings.cmd_lydia_disable_respond)
+	else:
+		await e.reply(strings.cmd_lydia_disable_already)
+
+@helper.register(events.NewMessage(pattern=strings.cmd_admin_report, incoming=True), flags=flags(True, adminreport=True, noerr=True))
+async def admin_report(e):
+	if e.is_private:
+		return
+	if e.chat_id == config.log_chat:
+#		No recursion please
+		return
+	if e.is_reply:
+		reporter = await e.get_sender()
+		r = await e.get_reply_message()
+		reportee = await r.get_sender()
+		chat = await e.get_chat()
+
+		await e.client.send_message(config.log_chat, strings.admin_report.format(
+		reporter=reporter, reportee=reportee, chat=chat, e=e, r=r,
+		remark = html.escape(str(e.text)),
+		reported_message = html.escape(str(r.text))))
+	else:
+		reporter = await e.get_sender()
+		chat = await e.get_chat()
+
+		await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
+		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text))))
+
+@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True), flags=flags(True, adminreport=True, noerr=True))
+async def admin_report_edited(e):
+	await admin_report(e)
+
+@helper.register(strings.cmd_brief)
+async def brief(e):
+	time = e.pattern_match.group(1)
+	time = float(time if time else 1)
+	content = e.pattern_match.group(2)
+	await e.edit(content)
+	await asyncio.sleep(time)
+	await e.delete()
