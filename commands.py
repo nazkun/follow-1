@@ -196,7 +196,7 @@ async def execnotes(e):
 			text = strings.cmd_execnotes_returned.format(html.escape(str(ret)))
 		try:
 			await r.edit(text)
-		except Exception:
+		except errors.MessageIdInvalidError:
 			pass
 
 @helper.register(strings.cmd_execnotes_show)
