@@ -361,7 +361,8 @@ async def info(e):
 		if fwlr.me.id == e.from_id:
 			id = fwlr
 	await e.reply(strings.cmd_info_respond.format(
-	fwlr_count=afc.fwlr_count, fwlr=id, source=strings.source))
+	fwlr_count=afc.fwlr_count, fwlr=id, source=strings.source),
+	link_preview=False)
 
 @helper.register(strings.cmd_lydia_enable)
 async def lydia_enable(e):
