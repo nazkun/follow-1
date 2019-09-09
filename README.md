@@ -30,8 +30,8 @@ Used this userbot to spam in chats (or something) and now most of your alts dele
 
 ### Features
 
-Just send `follow help` in a chat
-FYI, it'll only show features the follower can do (based on trust level)
+Just send `follow help` in a chat  
+FYI, it'll only show features the follower can do (based on trust level).  
 So do it on an infinity trust level follower.
 
 ### FAQn't
@@ -46,7 +46,7 @@ Boi, this is gonna be hard.
 - Login to Heroku
 - New App
 - Push to Heroku
-You might find that the database (very amazing DB I know) is periodically cleared.
+You might find that the database (very amazing DB I know) is periodically cleared.  
 Heroku restarts your dyno at least once per day (and deletes files).
 
 ##### how run???
@@ -60,8 +60,8 @@ Get out.
 
 ##### you cursed, i triggered
 
-Read this book called 'Why swearing is good for you'
-I give it a 10/10.
+Read this book called 'Why swearing is good for you'  
+I give it a 10/10.  
 Because it's like literally the only book I read (except for school)
 
 ##### SELLOUT!!1
@@ -70,7 +70,7 @@ Because it's like literally the only book I read (except for school)
 
 ##### What's this 'auto recovery'?
 
-It (tries to) auto recovers itself (aka calling `await client.get_me()` every minute)
+It (tries to) auto recovers itself (aka calling `await client.get_me()` every minute)  
 Why? I host it on my phone, which, if you don't know already, isn't a very reliable hosting solution.
 
 ##### Why does speedtest do blocking calls?
@@ -79,7 +79,7 @@ I tried to make it async, but it wouldn't show results if I did D:
 
 ##### I don't like this certain string.
 
-Then change it!
+Then change it!  
 Most strings are in `strings.py`, so you can just edit that.
 
 ##### How'd I change the source code location?
@@ -88,7 +88,7 @@ Most strings are in `strings.py`, so you can just edit that.
 
 ##### Why's the name 'FAQn't'?
 
-I just released this userbot, you expect it to blow up seconds after pushing?
+I just released this userbot, you expect it to blow up seconds after pushing?  
 Also, I don't expect it to get big.
 
 ##### What's with these random parts in the FAQn't?
@@ -108,7 +108,7 @@ Also, I don't expect it to get big.
 
 ##### Support chat?
 
-As I said in [Why's the name 'FAQn't'?](#whys-the-name-faqnt), I don't expect it to get big.
+As I said in [Why's the name 'FAQn't'?](#whys-the-name-faqnt), I don't expect it to get big.  
 So I guess [The Unity Chat](https://t.me/TheUnityChat) works. 
 
 ### Credits
