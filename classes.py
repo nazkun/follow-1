@@ -22,7 +22,8 @@ class flags:
 	def compare(self, to_be_compared):
 		for flag in to_be_compared.__dict__.keys():
 			if to_be_compared.__dict__[flag] == self.__dict__[flag] == True:
-				return True
+				if flag not in ('noerr',):
+					return True
 		for flag in to_be_compared.__dict__.keys():
 			if to_be_compared.__dict__[flag]:
 				if flag not in ('noerr',):

@@ -4,6 +4,9 @@
 # crawler
 # lydia (enable lydia on this follower?)
 # adminreport (receives admin reports and sends it to log_chat)
+# noerr
+#   if used on follower, follower's errors will be sent to log chat
+#   if used on handler, handler's errors will be sent to log chat
 default_flags = {'lydia': True, 'adminreport': True}
 # Chat used for logs
 log_chat = -1001172135061
