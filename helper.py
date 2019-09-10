@@ -55,10 +55,12 @@ def load_db():
 			db = json.load(fyle)
 	except Exception:
 		pass
-def load_insulta():
+def load_insults():
 	global insults
 	with open('insults.txt', encoding='utf-8') as fyle:
 		insults = fyle.readlines()
+load_db()
+load_insults()
 modules = logging.getLogger('modules')
 autorec = logging.getLogger('autorecover')
 
