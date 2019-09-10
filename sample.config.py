@@ -36,3 +36,6 @@ internal_chat_names = (
 #internal_chat(-1001338615562, 'bge'),
 #internal_chat('owlybird', ('owl', 'owls', 'owl\'s'))
 )
+
+# This helps a bit for people who uses the script for a single account only.
+if isinstance(followers, identify): followers = (followers,)
