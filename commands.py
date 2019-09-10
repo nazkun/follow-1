@@ -17,9 +17,9 @@ from classes import flags
 
 @helper.register(strings.cmd_help_text)
 async def help_text(e):
-	clients = e.pattern_group.match(1)
+	clients = e.pattern_match.group(1)
 	if clients:
-		clients = helper.give_client(helper.give_help(clients))
+		clients = helper.give_client(helper.give_id(clients))
 	else:
 		clients = [e.client]
 	for client in clients:
