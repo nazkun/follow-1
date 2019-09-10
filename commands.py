@@ -17,11 +17,17 @@ from classes import flags
 
 @helper.register(strings.cmd_help_text)
 async def help_text(e):
-	text = helper.give_help(e.client)
-	if config.help_as_file:
-		await e.reply(file=helper.memory_file('help.txt', text))
+	clients = e.pattern_group.match(1)
+	if clients:
+		clients = helper.give_client(helper.give_help(clients))
 	else:
-		await e.reply(text, link_preview=False)
+		clients = [e.client]
+	for client in clients:
+		text = helper.give_help(client)
+		if config.help_as_file:
+			await e.reply(file=helper.memory_file('help.txt', text))
+		else:
+			await e.reply(text, link_preview=False)
 
 @helper.register(strings.cmd_deactivate, 10)
 async def deactivate(e):

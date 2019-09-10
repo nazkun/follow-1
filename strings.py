@@ -12,9 +12,10 @@ no_lydia = 'Lydia is not enabled!'
 user_required = '404: No user found'
 speedtest_disabled = 'Speedtest is not enabled!'
 
-cmd_help_text = r'^follow help$'
+cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
 <code>follow help</code>
+<code>follow help [optional follower name/id]</code>
 	What are you reading?
 '''
 
