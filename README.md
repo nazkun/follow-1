@@ -26,7 +26,7 @@ Used this userbot to spam in chats (or something) and now most of your alts dele
 - You can also install the optional ones if you like (`pip3 install -r optional.txt`)
 - Get the followers/sessions ready
   - Add your followers/sessions to `followers/` (or anywhere else you put them, I don't care)
-  - `python3 sessions.py`
+  - `python3 sessions.py`  
     Don't forget to create the folders needed! (don't care about the files)
 - Start the bot (`python3 follow.py`)
 
