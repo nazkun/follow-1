@@ -76,6 +76,7 @@ async def main():
 		handlers.append(handler.__name__)
 
 	helper.modules.info('Handlers:\n%s', ', '.join(handlers))
+	helper.check_db_ver()
 	await helper.show_restarted()
 	while helper.active:
 		await asyncio.sleep(1)

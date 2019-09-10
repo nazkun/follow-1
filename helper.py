@@ -43,11 +43,12 @@ blank_space = '\u200b'
 handlers = []
 restart = []
 lydia_sessions = {}
+default_db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
 try:
 	with open('db.json') as fyle:
 		db = json.load(fyle)
 except Exception:
-	db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
+	db = default_db
 with open('insults.txt', encoding='utf-8') as fyle:
 	insults = fyle.readlines()
 modules = logging.getLogger('modules')
@@ -214,7 +215,7 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 		handlers.append(async_wrapper)
 		messy_handlers = [[handler.__name__, handler] for handler in handlers]
 		handlers = [handler[1] for handler in sorted(messy_handlers)]
-		modules.info('Loaded %s', func.__name__)
+#		modules.info('Loaded %s', func.__name__)
 		return async_wrapper
 	return decorator
 
@@ -296,3 +297,10 @@ async def give_self_id(e):
 		return (await e.client.get_input_entity('me')).user_id
 	except Exception:
 		return (await e.client.get_me()).id
+
+def check_db_ver(warn=True):
+	x = db['version'] <= default_db['version']
+	if not warn:
+		return x
+	if not x:
+		logging.warning('DB version is supposed to be <= %s, instead it\'s %s', str(default_db['version']), str(db['version']))
