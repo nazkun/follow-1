@@ -2,7 +2,6 @@ import asyncio
 import logging
 from telethon import TelegramClient
 import config
-import classes
 logging.basicConfig(
 format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
 level=logging.INFO)
@@ -10,6 +9,9 @@ level=logging.INFO)
 clients = logging.getLogger('clients')
 
 async def main():
+	if not config.followers:
+		loggging.error('Please edit the config')
+		exit(1)
 	print('''Welcome! Please input your API ID and Hash.
 What is an API ID/Hash?
 i cannot bother explaining, and for what?
