@@ -34,7 +34,7 @@ invite_re = re.compile(
 r'(?:(?:telegram\.(?:org|me|dog)|t\.me)/joinchat|feed|join|crawl)/([a-z0-9\-_]{22})',
 re.IGNORECASE)
 
-recovering = [False, 0]
+recovering = [False, 0, int(time.time())]
 followers = []
 active = True
 afk = None
@@ -267,11 +267,13 @@ async def auto_recover():
 	global recovering
 	autorec.info('Auto-recovery engaged. Recoveries: %s', str(recovering[1]))
 	if recovering[0]:
-		autorec.warning('A recovery is on-going')
-		autorec.info('Auto-recovery disengaged. Recoveries: %s', str(recovering[1]))
-		return
+		if not (int(time.time()) - recovering[2]) <= 1000*60*60:
+			autorec.warning('A recovery is on-going')
+			autorec.info('Auto-recovery disengaged. Recoveries: %s', str(recovering[1]))
+			return
 	recovering[0] = True
 	recovering[1] += 0.5
+	recovering[2] = int(time.time())
 	async def internal_recover(fwlr):
 		autorec.info('Recovering: %s', fwlr.identifier.name)
 		try:
