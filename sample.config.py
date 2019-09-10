@@ -39,3 +39,6 @@ internal_chat_names = (
 
 # This helps a bit for people who uses the script for a single account only.
 if isinstance(followers, identify): followers = (followers,)
+
+# Also for a single internal chat name
+if isinstance(internal_chat_names, internal_chat): internal_chat_names = (internal_chat_names,)
