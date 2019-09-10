@@ -43,6 +43,12 @@ class identify:
 		self.trust = trust
 		self.flags = flags
 
+	def __repr__(self):
+		return "".join(
+		(f'identify({self.int_id}, {self.name}, {self.session_path}, ',
+		f'trust={self.trust}, flags={self.flags})')
+		)
+
 class internal_chat:
 	def __init__(self, actual_chat, chat):
 		self.actual_chat = actual_chat
@@ -54,6 +60,9 @@ class internal_chat:
 		if chat in set(self.chat):
 			return True
 		return False
+
+	def __repr__(self):
+		return f'internal_chat({self.actual_chat}, {self.chat})'
 
 class follower:
 	def __init__(self, identifier, client, me, enu):
