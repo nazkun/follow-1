@@ -311,13 +311,9 @@ def convert_windows_newlines(text):
 	return re.sub('\n', '\r\n', text)
 
 async def give_self_id(e):
-	me = e.from_id
-	if me:
-		return me
-	try:
-		return (await e.client.get_input_entity('me')).user_id
-	except Exception:
-		return (await e.client.get_me()).id
+	for fwlr in followers:
+		if e.client == fwlr.client:
+			return fwlr.me.id
 
 def check_db_ver(warn=True):
 	x = db['version'] <= default_db['version']

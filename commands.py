@@ -326,10 +326,6 @@ async def crawler(e):
 				await e.client.send_message(config.log_chat, strings.crawler_failed.format(invite=invite),
 				file=fyle)
 
-#@helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
-#async def crawler_edited(e):
-#	await crawler(e)
-
 @helper.register(strings.cmd_json)
 async def json(e):
 	r = await e.get_reply_message()
@@ -444,11 +440,6 @@ async def admin_report(e):
 
 		await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
 		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text))))
-
-#@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True),
-#flags=flags(True, adminreport=True, noerr=True))
-#async def admin_report_edited(e):
-#	await admin_report(e)
 
 @helper.register(strings.cmd_brief)
 async def brief(e):
