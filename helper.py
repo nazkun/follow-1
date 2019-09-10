@@ -40,7 +40,9 @@ active = True
 afk = None
 afk_responses = {}
 blank_space = '\u200b'
+raw_handlers = []
 handlers = []
+named_handlers = []
 restart = []
 lydia_sessions = {}
 default_db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
@@ -181,20 +183,20 @@ def memory_file(file_name, file_content):
 
 def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 	def decorator(func):
-		global handlers
+		global raw_handlers, named_handlers, handlers
+		handlers = [i[0] for i in raw_handlers]
+		named_handlers = [i.__name__ for i in handlers]
 		func.__trust__ = trust
 		if not doc:
 			func.doc = getattr(strings, 'cmd_'+func.__name__+'_help', None)
 		else:
 			func.doc = doc
 		func.flags = flags
-		if not func.doc:
-			modules.warning('%s does not have a doc string.', func.__name__)
 		if not isinstance(pattern, str):
 			event_to_listen = pattern
 		else:
 			event_to_listen = events.NewMessage(pattern=pattern, outgoing=True)
-		@events.register(event_to_listen)
+#		@events.register(event_to_listen)
 		@functools.wraps(func)
 		async def async_wrapper(e):
 			try:
@@ -212,9 +214,18 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 					await e.reply(file=fyle)
 				except Exception:
 					await e.client.send_message(config.log_chat, file=fyle)
-		handlers.append(async_wrapper)
-		messy_handlers = [[handler.__name__, handler] for handler in handlers]
-		handlers = [handler[1] for handler in sorted(messy_handlers)]
+		if func.__name__ in named_handlers:
+			for handler in raw_handlers:
+				if handler[0].__name__ == func.__name__:
+					handler[1].append(event_to_listen)
+					break
+		else:
+			if not func.doc:
+				modules.warning('%s does not have a doc string.', func.__name__)
+			raw_handlers.append([async_wrapper, [event_to_listen]])
+#		handlers.append(async_wrapper)
+		messy_handlers = [[handler[0].__name__, handler] for handler in raw_handlers]
+		raw_handlers = [handler[1] for handler in sorted(messy_handlers)]
 #		modules.info('Loaded %s', func.__name__)
 		return async_wrapper
 	return decorator

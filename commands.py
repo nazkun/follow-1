@@ -302,6 +302,7 @@ async def respond_to_afk(e):
 			await e.reply(strings.im_afk.format(helper.afk))
 
 @helper.register(events.NewMessage(incoming=True), flags=flags(True, crawler=True))
+@helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
 async def crawler(e):
 	pattern_match = helper.invite_re.findall(e.text)
 	for invite in set(pattern_match):
@@ -325,9 +326,9 @@ async def crawler(e):
 				await e.client.send_message(config.log_chat, strings.crawler_failed.format(invite=invite),
 				file=fyle)
 
-@helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
-async def crawler_edited(e):
-	await crawler(e)
+#@helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
+#async def crawler_edited(e):
+#	await crawler(e)
 
 @helper.register(strings.cmd_json)
 async def json(e):
@@ -419,6 +420,8 @@ async def lydia_disable(e):
 
 @helper.register(events.NewMessage(pattern=strings.cmd_admin_report, incoming=True),
 flags=flags(True, adminreport=True, noerr=True))
+@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True),
+flags=flags(True, adminreport=True, noerr=True))
 async def admin_report(e):
 	if e.is_private:
 		return
@@ -442,10 +445,10 @@ async def admin_report(e):
 		await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
 		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text))))
 
-@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True),
-flags=flags(True, adminreport=True, noerr=True))
-async def admin_report_edited(e):
-	await admin_report(e)
+#@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True),
+#flags=flags(True, adminreport=True, noerr=True))
+#async def admin_report_edited(e):
+#	await admin_report(e)
 
 @helper.register(strings.cmd_brief)
 async def brief(e):
