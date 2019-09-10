@@ -46,13 +46,19 @@ named_handlers = []
 restart = []
 lydia_sessions = {}
 default_db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
-try:
-	with open('db.json') as fyle:
-		db = json.load(fyle)
-except Exception:
-	db = default_db
-with open('insults.txt', encoding='utf-8') as fyle:
-	insults = fyle.readlines()
+db = default_db
+insults = []
+def load_db():
+	global db
+	try:
+		with open('db.json') as fyle:
+			db = json.load(fyle)
+	except Exception:
+		pass
+def load_insulta():
+	global insults
+	with open('insults.txt', encoding='utf-8') as fyle:
+		insults = fyle.readlines()
 modules = logging.getLogger('modules')
 autorec = logging.getLogger('autorecover')
 
@@ -311,7 +317,8 @@ async def give_self_id(e):
 
 def check_db_ver(warn=True):
 	x = db['version'] <= default_db['version']
-	if not warn:
-		return x
-	if not x:
-		logging.warning('DB version is supposed to be <= %s, instead it\'s %s', str(default_db['version']), str(db['version']))
+	if not x and warn:
+		logging.warning(
+		'DB version is supposed to be <= %s, instead it\'s %s'
+		, default_db['version'], db['version'])
+	return x
