@@ -360,8 +360,12 @@ async def info(e):
 		afc(fwlr)
 		for fwlr in helper.followers
 	])
+	if not e.from_id:
+		me = (await e.client.get_me()).id
+	else:
+		me = e.from_id
 	for fwlr in helper.followers:
-		if fwlr.me.id == e.from_id:
+		if fwlr.me.id == me:
 			id = fwlr
 	await e.reply(strings.cmd_info_respond.format(
 	fwlr_count=afc.fwlr_count, fwlr=id, source=strings.source),
