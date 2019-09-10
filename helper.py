@@ -300,7 +300,7 @@ else:
 		def __init__(self):
 			pass
 
-		def start(self):
+		def start(self=None):
 			pass
 
 def traverse_json(json_to_be_traversed, traverse_path):
