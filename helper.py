@@ -293,9 +293,15 @@ async def auto_recover():
 	recovering[1] = int(recovering[1])
 	autorec.info('Auto-recovery disengaged. Recoveries: %s', str(recovering[1]))
 
-if not getattr(config, 'dont_cron', False):
-	if aiocron_enabled:
-		auto_recover = aiocron.crontab('* * * * *', start=False, func=auto_recover)
+if not getattr(config, 'dont_cron', False) and aiocron_enabled:
+	auto_recover = aiocron.crontab('* * * * *', start=False, func=auto_recover)
+else:
+	class auto_recover:
+		def __init__(self):
+			pass
+
+		def start(self):
+			pass
 
 def traverse_json(json_to_be_traversed, traverse_path):
 	js = json_to_be_traversed
