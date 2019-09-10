@@ -4,8 +4,8 @@ import sys
 import os
 import importlib
 import commands
-import strings
 from telethon import TelegramClient
+import strings
 import helper
 import config
 import classes

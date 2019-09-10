@@ -1,10 +1,10 @@
 import html
 import asyncio
 import random
-import follow
 from io import BytesIO
 from traceback import format_exc
 from telethon import utils, events, functions, types, errors
+import follow
 try:
 	from speedtest import Speedtest
 	speedtest_enabled = True
@@ -154,8 +154,8 @@ async def notes(e):
 
 @helper.register(strings.cmd_notes_list)
 async def notes_list(e):
-	notes = ', '.join(helper.db['notes'].keys())
-	await e.reply(strings.cmd_notes_list_respond.format(notes))
+	n = ', '.join(helper.db['notes'].keys())
+	await e.reply(strings.cmd_notes_list_respond.format(n))
 
 @helper.register(strings.cmd_execnotes_add, 50)
 async def execnotes_add(e):
@@ -209,8 +209,8 @@ async def execnotes_show(e):
 
 @helper.register(strings.cmd_execnotes_list)
 async def execnotes_list(e):
-	execnotes = ', '.join(helper.db['execnotes'].keys())
-	await e.reply(strings.cmd_execnotes_list_respond.format(execnotes))
+	execn = ', '.join(helper.db['execnotes'].keys())
+	await e.reply(strings.cmd_execnotes_list_respond.format(execn))
 
 @helper.register(strings.cmd_restart, 10)
 async def restart(e):
@@ -299,8 +299,8 @@ async def respond_to_afk(e):
 async def crawler(e):
 	pattern_match = helper.invite_re.findall(e.text)
 	for invite in set(pattern_match):
-		info = utils.resolve_invite_link(invite)
-		if info[1]:
+		inv_info = utils.resolve_invite_link(invite)
+		if inv_info[1]:
 			try:
 				chat_info = await e.client(functions.messages.CheckChatInviteRequest(invite))
 				if isinstance(chat_info, (types.ChatInviteAlready, types.ChatInvite)):
@@ -411,7 +411,8 @@ async def lydia_disable(e):
 	else:
 		await e.reply(strings.cmd_lydia_disable_already)
 
-@helper.register(events.NewMessage(pattern=strings.cmd_admin_report, incoming=True), flags=flags(True, adminreport=True, noerr=True))
+@helper.register(events.NewMessage(pattern=strings.cmd_admin_report, incoming=True),
+flags=flags(True, adminreport=True, noerr=True))
 async def admin_report(e):
 	if e.is_private:
 		return
@@ -426,8 +427,8 @@ async def admin_report(e):
 
 		await e.client.send_message(config.log_chat, strings.admin_report.format(
 		reporter=reporter, reportee=reportee, chat=chat, e=e, r=r,
-		remark = html.escape(str(e.text)),
-		reported_message = html.escape(str(r.text))))
+		remark=html.escape(str(e.text)),
+		reported_message=html.escape(str(r.text))))
 	else:
 		reporter = await e.get_sender()
 		chat = await e.get_chat()
@@ -435,7 +436,8 @@ async def admin_report(e):
 		await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
 		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text))))
 
-@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True), flags=flags(True, adminreport=True, noerr=True))
+@helper.register(events.MessageEdited(pattern=strings.cmd_admin_report, incoming=True),
+flags=flags(True, adminreport=True, noerr=True))
 async def admin_report_edited(e):
 	await admin_report(e)
 

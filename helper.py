@@ -203,10 +203,11 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 				try:
 					if func.flags.noerr:
 						raise Exception
-					me = await get_self_id(e)
+					me = await give_self_id(e)
 					for fwlr in followers:
-						if fwlr.identifier.flags.noerr:
-							raise Exception
+						if fwlr.me.id == me:
+							if fwlr.identifier.flags.noerr:
+								raise Exception
 					await e.reply(file=fyle)
 				except Exception:
 					await e.client.send_message(config.log_chat, file=fyle)
@@ -287,7 +288,7 @@ def traverse_json(json_to_be_traversed, traverse_path):
 def convert_windows_newlines(text):
 	return re.sub('\n', '\r\n', text)
 
-async def get_self_id(e):
+async def give_self_id(e):
 	me = e.from_id
 	if me:
 		return me

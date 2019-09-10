@@ -1,11 +1,12 @@
 from config import default_flags
 
 class flags:
-	def __init__(self, disable_defaults=False, *, noall=None, crawler=None, lydia=None, adminreport=None, noerr=None):
-		for flag in default_flags.keys():
+	def __init__(self, disable_defaults=False, *, noall=None, crawler=None,
+	lydia=None, adminreport=None, noerr=None):
+		for flag in default_flags:
 			self.__dict__[flag] = default_flags[flag]
 		def iin(flag, rflag):
-			if flag in default_flags.keys() and not disable_defaults:
+			if flag in default_flags and not disable_defaults:
 				if rflag is not None:
 					return rflag
 				return default_flags[flag]
@@ -17,7 +18,11 @@ class flags:
 		self.noerr = iin('noerr', noerr)
 
 	def __repr__(self):
-		return f'flags(noall={self.noall}, crawler={self.crawler}, lydia={self.lydia}, adminreport={self.adminreport}, noerr={self.noerr})'
+		return "".join(
+		(f'flags(noall={self.noall}, crawler={self.crawler}, ',
+		f'lydia={self.lydia}, adminreport={self.adminreport}, ',
+		f'noerr={self.noerr})')
+		)
 
 	def compare(self, to_be_compared):
 		for flag in to_be_compared.__dict__.keys():
