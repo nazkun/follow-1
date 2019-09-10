@@ -218,8 +218,9 @@ async def restart(e):
 		r = await e.reply(strings.cmd_restart_respond)
 	else:
 		r = await e.reply(strings.cmd_restart_restarted)
+	me = await helper.give_self_id(e)
 	for fwlr in helper.followers:
-		if fwlr.me.id == e.from_id:
+		if fwlr.me.id == me:
 			helper.restart = [str(fwlr.identifier.int_id),
 			str(e.chat_id), str(r.id)]
 	if e.pattern_match.group(1):
@@ -360,15 +361,12 @@ async def info(e):
 		afc(fwlr)
 		for fwlr in helper.followers
 	])
-	if not e.from_id:
-		me = (await e.client.get_me()).id
-	else:
-		me = e.from_id
-	for fwlr in helper.followers:
-		if fwlr.me.id == me:
-			id = fwlr
+	me = await helper.give_self_id(e)
+	for f in helper.followers:
+		if f.me.id == me:
+			fwlr = f
 	await e.reply(strings.cmd_info_respond.format(
-	fwlr_count=afc.fwlr_count, fwlr=id, source=strings.source),
+	fwlr_count=afc.fwlr_count, fwlr=fwlr, source=strings.source),
 	link_preview=False)
 
 @helper.register(strings.cmd_lydia_enable)
