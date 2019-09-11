@@ -343,6 +343,8 @@ async def lydia_respond(e):
 		return
 	if e.from_id in helper.db['nolydia']:
 		return
+	if not helper.coffeehouse_enabled:
+		return
 	chat = await e.get_sender()
 	if chat.verified or chat.bot:
 		return
@@ -374,7 +376,7 @@ async def info(e):
 
 @helper.register(strings.cmd_lydia_enable)
 async def lydia_enable(e):
-	if not config.lydia_api:
+	if not config.lydia_api or not helper.coffeehouse_enabled:
 		await e.reply(strings.no_lydia)
 		return
 	r = await e.get_reply_message()
@@ -395,7 +397,7 @@ async def lydia_enable(e):
 
 @helper.register(strings.cmd_lydia_disable)
 async def lydia_disable(e):
-	if not config.lydia_api:
+	if not config.lydia_api or not coffeehouse_enabled:
 		await e.reply(strings.no_lydia)
 		return
 	r = await e.get_reply_message()
