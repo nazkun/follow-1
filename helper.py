@@ -64,7 +64,7 @@ load_insults()
 modules = logging.getLogger('modules')
 autorec = logging.getLogger('autorecover')
 
-if getattr(config, 'lydia_api', None):
+if getattr(config, 'lydia_api', None) and coffeehouse_enabled:
 	_ch = API(config.lydia_api)
 	async def give_lydia_session(loop, user):
 		def _give_lydia_session(user):
