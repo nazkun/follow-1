@@ -64,6 +64,9 @@ class internal_chat:
 	def __repr__(self):
 		return f'internal_chat({self.actual_chat}, {self.chat})'
 
+	def __iter__(self):
+		return iter([self])
+
 class follower:
 	def __init__(self, identifier, client, me, enu):
 		self.identifier = identifier
@@ -75,6 +78,9 @@ class follower:
 
 	def __eq__(self, int_id):
 		return self.identifier.int_id == int_id
+
+	def __iter__(self):
+		return iter([self])
 
 	async def online(self):
 		return self.client.is_connected() == await self.client.is_user_authorized() == True
