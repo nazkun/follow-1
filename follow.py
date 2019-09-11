@@ -54,10 +54,11 @@ async def main():
 		client.parse_mode = 'html'
 
 		your_trust = identifier.trust
-		for handler in helper.handlers:
-			if your_trust >= handler.__trust__:
-				if identifier.flags.compare(handler.flags):
-					client.add_event_handler(handler)
+		for handler in helper.raw_handlers:
+			if your_trust >= handler[0].__trust__:
+				if identifier.flags.compare(handler[0].flags):
+					for e in handler[1]:
+						client.add_event_handler(handler[0], e)
 
 		await client.connect()
 		me = await client.get_me()

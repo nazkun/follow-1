@@ -207,11 +207,9 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 #		@events.register(event_to_listen)
 		@functools.wraps(func)
 		async def async_wrapper(e):
-			modules.debug('Module %s executed, running code', func.__name__)
 			try:
 				await func(e)
 			except Exception:
-				modules.debug('Module %s errored, publically logging', func.__name__)
 				fyle = memory_file('exception.txt', format_exc())
 				try:
 					if func.flags.noerr:
@@ -223,21 +221,7 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 								raise Exception
 					await e.reply(file=fyle)
 				except Exception:
-					modules.debug('Failed to publically log, privately logging (%s)', func.__name__)
-					try:
-						await e.client.send_message(config.log_chat, file=fyle)
-					except Exception as f:
-						modules.basicConfig(
-						format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-						level=logging.DEBUG)
-						modules.debug('Failed to privately log error of %s', func.__name__)
-						raise f
-					else:
-						modules.debug('Privately logged error of %s', func.__name__)
-				else:
-					modules.debug('Publically logged error of %s', func.__name__)
-			else:
-				modules.debug('Ran %s with no errors', func.__name__)
+					await e.client.send_message(config.log_chat, file=fyle)
 		if func.__name__ in named_handlers:
 			for handler in raw_handlers:
 				if handler[0].__name__ == func.__name__:
@@ -336,11 +320,8 @@ def convert_windows_newlines(text):
 	return re.sub('\n', '\r\n', text)
 
 async def give_self_id(e):
-	try:
-		if e.from_id:
-			return e.from_id
-	except AttributeError:
-		pass
+	if e.from_id:
+		return e.from_id
 	for fwlr in followers:
 		if e.client == fwlr.client:
 			return fwlr.me.id
