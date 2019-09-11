@@ -320,8 +320,11 @@ def convert_windows_newlines(text):
 	return re.sub('\n', '\r\n', text)
 
 async def give_self_id(e):
-	if e.from_id:
-		return e.from_id
+	try:
+		if e.from_id:
+			return e.from_id
+	except AttributeError:
+		pass
 	for fwlr in followers:
 		if e.client == fwlr.client:
 			return fwlr.me.id
