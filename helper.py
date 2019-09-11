@@ -270,6 +270,8 @@ def check_cas(user_id):
 	return strings.cmd_cas_respond.format(user_id=user_id, offenses=js_response['result']['offenses'])
 
 async def auto_recover():
+	if not followers:
+		return
 	global recovering
 	autorec.info('Auto-recovery engaged. Recoveries: %s', str(recovering[1]))
 	if recovering[0]:
@@ -300,12 +302,9 @@ async def auto_recover():
 if not getattr(config, 'dont_cron', False) and aiocron_enabled:
 	auto_recover = aiocron.crontab('* * * * *', start=False, func=auto_recover)
 else:
-	class auto_recover:
-		def __init__(self):
-			pass
-
-		def start(self=None):
-			pass
+	def autorec_disable():
+		pass
+	auto_recover.start = autorec_disable
 
 def traverse_json(json_to_be_traversed, traverse_path):
 	js = json_to_be_traversed
