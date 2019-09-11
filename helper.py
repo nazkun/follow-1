@@ -238,11 +238,15 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 		return async_wrapper
 	return decorator
 
-def save_db():
+def save_db(chk_db=True):
+	if chk_db:
+		if not check_db_ver(False):
+			return False
 	global db
 	db = json.loads(json.dumps(db, sort_keys=True))
 	with open('db.json', 'w+') as fyle:
 		json.dump(db, fyle, indent=4)
+	return True
 
 async def show_restarted():
 	if len(sys.argv) == 4:
@@ -330,3 +334,9 @@ def check_db_ver(warn=True):
 		'DB version is supposed to be <= %s, instead it\'s %s'
 		, default_db['version'], db['version'])
 	return x
+
+async def asave_db(e):
+	if not save_db():
+		await e.reply(strings.newer_db.format(db['version'], default_db['version']))
+		return False
+	return True

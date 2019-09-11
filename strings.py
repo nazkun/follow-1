@@ -11,6 +11,7 @@ cmd_execnotes_failed = '404: Cannot find execnote {}'
 no_lydia = 'Lydia is not enabled!'
 user_required = '404: No user found'
 speedtest_disabled = 'Speedtest is not enabled!'
+newer_db = 'The database\'s version ({}) is newer than expected ({})'
 
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''

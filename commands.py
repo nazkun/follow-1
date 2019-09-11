@@ -136,8 +136,8 @@ async def notes_add(e):
 	note = e.pattern_match.group(1)
 	content = e.pattern_match.group(2)
 	helper.db['notes'][note] = content
-	helper.save_db()
-	await e.reply(strings.cmd_notes_add_respond)
+	if await helper.asave_db(e):
+		await e.reply(strings.cmd_notes_add_respond)
 
 @helper.register(strings.cmd_notes_remove, 10)
 async def notes_remove(e):
@@ -147,8 +147,8 @@ async def notes_remove(e):
 	except KeyError:
 		await e.reply(strings.cmd_notes_failed.format(note))
 	else:
-		helper.save_db()
-		await e.reply(strings.cmd_notes_remove_respond)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_notes_remove_respond)
 
 @helper.register(strings.cmd_notes)
 async def notes(e):
@@ -168,8 +168,8 @@ async def execnotes_add(e):
 	note = e.pattern_match.group(1)
 	content = e.pattern_match.group(2)
 	helper.db['execnotes'][note] = content
-	helper.save_db()
-	await e.reply(strings.cmd_execnotes_add_respond)
+	if await helper.asave_db(e):
+		await e.reply(strings.cmd_execnotes_add_respond)
 
 @helper.register(strings.cmd_execnotes_remove, 50)
 async def execnotes_remove(e):
@@ -179,8 +179,8 @@ async def execnotes_remove(e):
 	except KeyError:
 		await e.reply(strings.cmd_execnotes_failed.format(note))
 	else:
-		helper.save_db()
-		await e.reply(strings.cmd_execnotes_remove_respond)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_execnotes_remove_respond)
 
 @helper.register(strings.cmd_execnotes)
 async def execnotes(e):
@@ -388,8 +388,8 @@ async def lydia_enable(e):
 		user = (await e.client.get_input_entity(user)).user_id
 	if user in helper.db['nolydia']:
 		helper.db['nolydia'].remove(user)
-		helper.save_db()
-		await e.reply(strings.cmd_lydia_enable_respond)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_lydia_enable_respond)
 	else:
 		await e.reply(strings.cmd_lydia_enable_already)
 
@@ -409,8 +409,8 @@ async def lydia_disable(e):
 		user = (await e.client.get_input_entity(user)).user_id
 	if user not in helper.db['nolydia']:
 		helper.db['nolydia'].append(user)
-		helper.save_db()
-		await e.reply(strings.cmd_lydia_disable_respond)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_lydia_disable_respond)
 	else:
 		await e.reply(strings.cmd_lydia_disable_already)
 
