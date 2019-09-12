@@ -347,10 +347,10 @@ async def lydia_respond(e):
 		return
 	if e.from_id in helper.lydia_rate:
 		return
+	helper.lydia_rate.append(e.from_id)
 	chat = await e.get_sender()
 	if chat.verified or chat.bot:
 		return
-	helper.lydia_rate(e.from_id)
 	async with e.client.action(e.chat_id, 'typing'):
 		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
 		respond = await helper.lydia_think(e.client.loop, session, e.text)
