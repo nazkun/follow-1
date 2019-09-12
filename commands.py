@@ -345,16 +345,21 @@ async def lydia_respond(e):
 		return
 	if not helper.coffeehouse_enabled:
 		return
+	if e.from_id in helper.lydia_rate:
+		return
 	chat = await e.get_sender()
 	if chat.verified or chat.bot:
 		return
+	helper.lydia_rate(e.from_id)
 	async with e.client.action(e.chat_id, 'typing'):
 		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
 		respond = await helper.lydia_think(e.client.loop, session, e.text)
 		# If lydia is disabled while it's processing,
 		if e.from_id in helper.db['nolydia']:
+			helper.lydia_rate.remove(e.from_id)
 			return
 		await e.respond(html.escape(respond), reply_to=None if not e.is_reply else e.id)
+	helper.lydia_rate.remove(e.from_id)
 
 @helper.register(strings.cmd_info)
 async def info(e):
