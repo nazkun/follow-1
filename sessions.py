@@ -10,7 +10,7 @@ clients = logging.getLogger('clients')
 
 async def main():
 	if not config.followers:
-		loggging.error('Please edit the config')
+		logging.error('Please edit the config')
 		exit(1)
 	print('''Welcome! Please input your API ID and Hash.
 What is an API ID/Hash?
