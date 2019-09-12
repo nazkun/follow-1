@@ -246,7 +246,7 @@ cmd_lydia_disable_help = '''
 	Disable lydia for <code>[user]</code>
 '''
 
-cmd_admin_report = r'@admins?|^[/\.!#](?:report|admins?)'
+cmd_admin_report = r'@admins?|^[/\.!#](?:report|admins?)(?:$|\W)'
 admin_report = '''Admin report!
 
 <a href='https://t.me/c/{chat.id}/{e.id}'>Chat</a>: <code>{chat.id}</code>
