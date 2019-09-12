@@ -402,7 +402,7 @@ async def lydia_enable(e):
 
 @helper.register(strings.cmd_lydia_disable)
 async def lydia_disable(e):
-	if not config.lydia_api or not coffeehouse_enabled:
+	if not config.lydia_api or not helper.coffeehouse_enabled:
 		await e.reply(strings.no_lydia)
 		return
 	r = await e.get_reply_message()
