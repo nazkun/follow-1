@@ -22,10 +22,12 @@ async def quick_restart():
 	importlib.reload(classes)
 	logging.info('Restarting helper')
 	config.dont_cron = True
+	res_info = helper.restart[0]
 	importlib.reload(helper)
-	async def async_disabled():
-		pass
-	helper.show_restarted = async_disabled
+#	async def async_disabled():
+#		pass
+#	helper.show_restarted = async_disabled
+	helper.restart = [*res_info]
 	class disabled:
 		def __init__(self):
 			pass

@@ -220,17 +220,17 @@ async def execnotes_list(e):
 
 @helper.register(strings.cmd_restart, 10)
 async def restart(e):
-	if not e.pattern_match.group(1):
-		r = await e.reply(strings.cmd_restart_respond)
-	else:
-		r = await e.reply(strings.cmd_restart_restarted)
+#	if not e.pattern_match.group(1):
+	r = await e.reply(strings.cmd_restart_respond)
+#	else:
+#		r = await e.reply(strings.cmd_restart_restarted)
 	me = await helper.give_self_id(e)
 	for fwlr in helper.followers:
-		if fwlr.me.id == me:
+		if fwlr.client == e.client:
 			helper.restart = [str(fwlr.identifier.int_id),
 			str(e.chat_id), str(r.id)]
 	if e.pattern_match.group(1):
-		helper.restart = ['hi']
+		helper.restart = [['filler data', *helper.restart]]
 	follow.mained = True
 	helper.active = False
 

@@ -251,14 +251,17 @@ def save_db(chk_db=True):
 	return True
 
 async def show_restarted():
-	if len(sys.argv) == 4:
+	global restart
+	x = restart or sys.argv
+	if restart or len(sys.argv) == 4:
 		try:
-			client = give_client(give_id(sys.argv[1]))[0]
-			await client.edit_message(int(sys.argv[2]),
-			int(sys.argv[3]), strings.cmd_restart_restarted)
+			client = give_client(give_id(x[1]))[0]
+			await client.edit_message(int(x[2]),
+			int(x[3]), strings.cmd_restart_restarted)
 		except Exception:
 			logging.error('Failed to show restart')
 			print(format_exc())
+		restart = []
 
 def insult(name):
 	return re.sub('##name##', name, random.choice(insults))
