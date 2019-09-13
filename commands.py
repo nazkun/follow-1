@@ -224,7 +224,6 @@ async def restart(e):
 	r = await e.reply(strings.cmd_restart_respond)
 #	else:
 #		r = await e.reply(strings.cmd_restart_restarted)
-	me = await helper.give_self_id(e)
 	for fwlr in helper.followers:
 		if fwlr.client == e.client:
 			helper.restart = [str(fwlr.identifier.int_id),
