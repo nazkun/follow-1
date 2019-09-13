@@ -194,8 +194,6 @@ def memory_file(file_name, file_content):
 def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 	def decorator(func):
 		global raw_handlers, named_handlers, handlers
-		handlers = [i[0] for i in raw_handlers]
-		named_handlers = [i.__name__ for i in handlers]
 		func.__trust__ = trust
 		if not doc:
 			func.doc = getattr(strings, 'cmd_'+func.__name__+'_help', None)
@@ -216,9 +214,9 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 				try:
 					if func.flags.noerr:
 						raise Exception
-					me = await give_self_id(e)
+#					me = await give_self_id(e)
 					for fwlr in followers:
-						if fwlr.me.id == me:
+						if fwlr.client == e.client:
 							if fwlr.identifier.flags.noerr:
 								raise Exception
 					await e.reply(file=fyle)
@@ -237,6 +235,8 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 		messy_handlers = [[handler[0].__name__, handler] for handler in raw_handlers]
 		raw_handlers = [handler[1] for handler in sorted(messy_handlers)]
 #		modules.info('Loaded %s', func.__name__)
+		handlers = [i[0] for i in raw_handlers]
+		named_handlers = [i.__name__ for i in handlers]
 		return async_wrapper
 	return decorator
 
@@ -344,3 +344,12 @@ async def asave_db(e):
 		await e.reply(strings.newer_db.format(db['version'], default_db['version']))
 		return False
 	return True
+
+async def give_user_id(user, client):
+	try:
+		return int(user)
+	except ValueError:
+		try:
+			return (await client.get_input_entity(user)).user_id
+		except:
+			return (await client.get_entity(user)).id

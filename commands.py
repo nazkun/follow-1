@@ -394,7 +394,7 @@ async def lydia_enable(e):
 		if not user:
 			await e.reply(strings.user_required)
 			return
-		user = (await e.client.get_input_entity(user)).user_id
+		user = await helper.give_user_id(user, client)
 	if user in helper.db['nolydia']:
 		helper.db['nolydia'].remove(user)
 		if await helper.asave_db(e):
@@ -415,7 +415,7 @@ async def lydia_disable(e):
 		if not user:
 			await e.reply(strings.user_required)
 			return
-		user = (await e.client.get_input_entity(user)).user_id
+		user = await helper.give_user_id(user, client)
 	if user not in helper.db['nolydia']:
 		helper.db['nolydia'].append(user)
 		if await helper.asave_db(e):
