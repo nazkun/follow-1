@@ -222,6 +222,7 @@ cmd_info_respond = '''Userbot online.
 
 <code>Followers: {fwlr_count}
 Current Follower: {fwlr.identifier.name}
+Message Count: {message_count}
 Source Code:</code> {source}'''
 cmd_info_help = '''
 <code>follow</code>

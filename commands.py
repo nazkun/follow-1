@@ -328,7 +328,9 @@ async def crawler(e):
 
 @helper.register(strings.cmd_json)
 async def json(e):
+#	print(e.input_chat)
 	r = await e.get_reply_message()
+#	quit()
 	if not r:
 		r = e
 #	This code is also stolen from Twittie (t.me/twitface)
@@ -347,7 +349,7 @@ async def lydia_respond(e):
 		return
 	if e.from_id in helper.lydia_rate:
 		return
-	helper.lydia_rate.append(e.from_id)
+	helper.lydia_rate.add(e.from_id)
 	chat = await e.get_sender()
 	if chat.verified or chat.bot:
 		return
@@ -376,8 +378,8 @@ async def info(e):
 		if f.me.id == me:
 			fwlr = f
 	await e.reply(strings.cmd_info_respond.format(
-	fwlr_count=afc.fwlr_count, fwlr=fwlr, source=strings.source),
-	link_preview=False)
+	fwlr_count=afc.fwlr_count, fwlr=fwlr, source=strings.source,
+	message_count=len(helper.messages)), link_preview=False)
 
 @helper.register(strings.cmd_lydia_enable)
 async def lydia_enable(e):
@@ -456,3 +458,7 @@ async def brief(e):
 	await e.edit(content)
 	await asyncio.sleep(time)
 	await e.delete()
+
+@helper.register(events.NewMessage(), flags=flags(True, msgcount=True, noerr=True))
+async def message_counter(e):
+	helper.messages.add((e.chat_id, e.id))

@@ -45,10 +45,11 @@ handlers = []
 named_handlers = []
 restart = []
 lydia_sessions = {}
-lydia_rate = []
+lydia_rate = {}
 default_db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
 db = default_db
 insults = []
+messages = {}
 def load_db():
 	global db
 	try:
