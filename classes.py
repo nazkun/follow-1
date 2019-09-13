@@ -2,7 +2,7 @@ from config import default_flags
 
 class flags:
 	def __init__(self, disable_defaults=False, *, noall=None, crawler=None,
-	lydia=None, adminreport=None, noerr=None):
+	lydia=None, adminreport=None, noerr=None, msgcount=None):
 		for flag in default_flags:
 			self.__dict__[flag] = default_flags[flag]
 		def iin(flag, rflag):
@@ -16,12 +16,13 @@ class flags:
 		self.lydia = iin('lydia', lydia)
 		self.adminreport = iin('adminreport', adminreport)
 		self.noerr = iin('noerr', noerr)
+		self.msgcount = iin('msgcount', msgcount)
 
 	def __repr__(self):
 		return "".join(
 		(f'flags(noall={self.noall}, crawler={self.crawler}, ',
 		f'lydia={self.lydia}, adminreport={self.adminreport}, ',
-		f'noerr={self.noerr})')
+		f'noerr={self.noerr}), msgcount={self.msgcount}')
 		)
 
 	def compare(self, to_be_compared):
@@ -83,4 +84,4 @@ class follower:
 		return iter([self])
 
 	async def online(self):
-		return self.client.is_connected() == await self.client.is_user_authorized() == True
+		return self.client.is_connected() and await self.client.is_user_authorized()
