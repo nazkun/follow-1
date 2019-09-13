@@ -263,13 +263,16 @@ async def show_restarted():
 def insult(name):
 	return re.sub('##name##', name, random.choice(insults))
 
-def check_cas(user_id):
-	user_id = int(user_id)
-	response = requests.get('https://combot.org/api/cas/check?user_id={}'.format(user_id))
-	js_response = json.loads(response.text)
-	if not js_response['ok']:
-		return js_response['description']
-	return strings.cmd_cas_respond.format(user_id=user_id, offenses=js_response['result']['offenses'])
+async def check_cas(loop, user_id):
+	def _check_cas(user_id):
+		user_id = int(user_id)
+		response = requests.get('https://combot.org/api/cas/check?user_id={}'.format(user_id))
+		js_response = json.loads(response.text)
+		if not js_response['ok']:
+			return js_response['description']
+		return strings.cmd_cas_respond.format(user_id=user_id, offenses=js_response['result']['offenses'])
+	fut = loop.run_in_executor(None, _check_cas, user_id)
+	return await fut
 
 async def auto_recover():
 	if not followers:
