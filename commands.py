@@ -483,7 +483,7 @@ async def ignore_enable(e):
 		else:
 			user = await helper.give_user_id(user, e.client)
 	if user in helper.db['ignored']:
-		helper.db['ignored'].remove(user)
+		helper.db['ignored'].append(user)
 		if await helper.asave_db(e):
 			await e.reply(strings.cmd_ignore_enable_respond)
 	else:
@@ -504,8 +504,14 @@ async def ignore_disable(e):
 		else:
 			user = await helper.give_user_id(user, e.client)
 	if user not in helper.db['ignored']:
-		helper.db['ignored'].append(user)
+		helper.db['ignored'].remove(user)
 		if await helper.asave_db(e):
 			await e.reply(strings.cmd_ignore_disable_respond)
 	else:
 		await e.reply(strings.cmd_ignore_disable_already)
+
+@helper.register(events.NewMessage(incoming=True), flags=flags(True, ignore=True))
+async def ignore(e):
+	if e.is_private or e.mentioned:
+		if e.from_id in helper.db['ignored']:
+			await e.client.send_read_acknowledge(e.chat_id, e, clear_mentions=True)

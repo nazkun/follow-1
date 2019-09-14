@@ -8,7 +8,8 @@
 #   if used on follower, follower's errors will be sent to log chat
 #   if used on handler, handler's errors will be sent to log chat
 # msgcount (counts all the messages you have and show it in 'follow info')
-default_flags = {'lydia': True, 'adminreport': True, 'msgcount': True}
+# ignore (if a user is ignored, ignore that user on this follower)
+default_flags = {'lydia': True, 'adminreport': True, 'msgcount': True, 'ignore': True}
 # Chat used for logs
 log_chat = -1001172135061
 # Send help text as file?
