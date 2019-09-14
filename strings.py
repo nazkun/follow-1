@@ -76,7 +76,7 @@ cmd_cli_help = '''
 	Runs <code>[cli command]</code> (for shell)
 '''
 
-cmd_notes_add = r'^follow notes add (.+)\n([\s\S]+)$'
+cmd_notes_add = r'^follow n(?:otes?)? add (.+)\n([\s\S]+)$'
 cmd_notes_add_respond = '200: Operation add note complete'
 cmd_notes_add_help = '''
 <code>follow notes add [name]
@@ -84,7 +84,7 @@ cmd_notes_add_help = '''
 	Adds a note named <code>[name]</code> with <code>[content]</code>
 '''
 
-cmd_notes_remove = r'^follow notes remove (.+)$'
+cmd_notes_remove = r'^follow n(?:otes?)? remove (.+)$'
 cmd_notes_remove_respond = '200: Operation remove note complete'
 cmd_notes_remove_help = '''
 <code>follow notes remove [name]</code>
@@ -97,7 +97,7 @@ cmd_notes_help = '''
 	Gets the note <code>[name]</code>
 '''
 
-cmd_notes_list = r'^follow notes$'
+cmd_notes_list = r'^follow n(?:otes?)?$'
 cmd_notes_list_respond = '''Notes:
 <code>{}</code>'''
 cmd_notes_list_help = '''
@@ -105,7 +105,7 @@ cmd_notes_list_help = '''
 	Lists your notes
 '''
 
-cmd_execnotes_add = r'^follow execnotes add (.+)\n([\s\S]+)$'
+cmd_execnotes_add = r'^follow e(?:xec)?n(?:otes?)? add (.+)\n([\s\S]+)$'
 cmd_execnotes_add_respond = '200: Operation add execnote complete'
 cmd_execnotes_add_help = '''
 <code>follow execnotes add [name]
@@ -113,7 +113,7 @@ cmd_execnotes_add_help = '''
 	Adds an execnote named <code>[name]</code> that runs <code>[code]</code>
 '''
 
-cmd_execnotes_remove = r'^follow execnotes remove (.+)$'
+cmd_execnotes_remove = r'^follow e(?:xec)?n(?:otes?)? remove (.+)$'
 cmd_execnotes_remove_respond = '200: Operation remove execnote complete'
 cmd_execnotes_remove_help = '''
 <code>follow execnotes remove [name]</code>
@@ -126,13 +126,13 @@ cmd_execnotes_help = '''
 	Runs the execnote <code>[name]</code>
 '''
 
-cmd_execnotes_show = r'^follow execnotes? show (.+)$'
+cmd_execnotes_show = r'^follow e(?:xec)?n(?:otes?)? show (.+)$'
 cmd_execnotes_show_help = '''
 <code>follow execnotes show [name]</code>
 	Shows the code for the execnote <code>[name]</code>
 '''
 
-cmd_execnotes_list = r'^follow execnotes$'
+cmd_execnotes_list = r'^follow e(?$xec)?n(?:otes?)?$'
 cmd_execnotes_list_respond = '''Execnotes:
 <code>{}</code>'''
 cmd_execnotes_list_help = '''
