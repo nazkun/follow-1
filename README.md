@@ -1,6 +1,6 @@
 ## follow
 
-2nd (that I know of) open-source multi client Telegram Userbot ([friendly-tg](https://github.com/friendly-tg/friendly-tg) beat me)
+2nd (that I know of) open-source multi client Telegram Userbot ([friendly-tg](https://github.com/friendly-telegram/friendly-telegram) beat me)
 
 ## DISCLAIMER
 
