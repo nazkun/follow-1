@@ -267,3 +267,21 @@ cmd_brief_help = '''
 [text]</code>
 	Sends <code>[text]</code> and delete it after <code>[seconds]</code>
 '''
+
+cmd_ignore_enable = r'^follow ignore (?:enable|[Tt]rue)(?: (.+))?$'
+cmd_ignore_enable_respond = 'User ignored!'
+cmd_ignore_enable_already = 'User is already ignored!'
+cmd_ignore_enable_help = '''
+<code>follow ignore enable [user]</code>
+<code>follow ignore enable</code> <i>(as reply)</i>
+	Ignores <code>[user]</code>
+'''
+
+cmd_ignore_disable = r'^follow ignore (?:disable|[Ff]alse)(?: (.+))?$'
+cmd_ignore_disable_respond = 'User un-ignored!'
+cmd_ignore_disable_already = 'User is already un-ignored!'
+cmd_ignore_disable_help = '''
+<code>follow ignore disable [user]</code>
+<code>follow ignore disable</code> <i>(as reply)</i>
+	Un-ignores <code>[user]</code>
+'''

@@ -467,3 +467,45 @@ async def brief(e):
 @helper.register(events.NewMessage(), flags=flags(True, msgcount=True, noerr=True))
 async def message_counter(e):
 	helper.messages.add((e.chat_id, e.id))
+
+@helper.register(strings.cmd_ignore_enable)
+async def ignore_enable(e):
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			if not e.is_private:
+				await e.reply(strings.user_required)
+				return
+			user = e.chat_id
+		else:
+			user = await helper.give_user_id(user, e.client)
+	if user in helper.db['ignored']:
+		helper.db['ignored'].remove(user)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_ignore_enable_respond)
+	else:
+		await e.reply(strings.cmd_ignore_enable_already)
+
+@helper.register(strings.cmd_ignore_disable)
+async def ignore_disable(e):
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			if not e.is_private:
+				await e.reply(strings.user_required)
+				return
+			user = e.chat_id
+		else:
+			user = await helper.give_user_id(user, e.client)
+	if user not in helper.db['ignored']:
+		helper.db['ignored'].append(user)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_ignore_disable_respond)
+	else:
+		await e.reply(strings.cmd_ignore_disable_already)

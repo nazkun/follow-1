@@ -46,7 +46,7 @@ named_handlers = []
 restart = []
 lydia_sessions = {}
 lydia_rate = set()
-default_db = {'version': 1, 'notes': {}, 'execnotes': {}, 'nolydia': []}
+default_db = {'version': 2, 'notes': {}, 'execnotes': {}, 'nolydia': [], 'ignored': []}
 db = default_db
 insults = []
 messages = set()
@@ -55,6 +55,9 @@ def load_db():
 	try:
 		with open('db.json') as fyle:
 			db = json.load(fyle)
+		if db['version'] == 1:
+			db['ignored'] = []
+			db['version'] += 1
 	except Exception:
 		pass
 def load_insults():
