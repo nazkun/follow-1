@@ -76,7 +76,7 @@ cmd_cli_help = '''
 	Runs <code>[cli command]</code> (for shell)
 '''
 
-cmd_notes_add = r'^follow n(?:otes?)? add (.+)\n([\s\S]+)$'
+cmd_notes_add = r'^follow n(?:otes?)? (?:add|save) (.+)\n([\s\S]+)$'
 cmd_notes_add_respond = '200: Operation add note complete'
 cmd_notes_add_help = '''
 <code>follow notes add [name]
@@ -91,7 +91,7 @@ cmd_notes_remove_help = '''
 	Removes the note <code>[name]</code>
 '''
 
-cmd_notes = r'^follow n(?:otes?)? ((?!add)(?!remove).+)$'
+cmd_notes = r'^follow n(?:otes?)? ((?!add)(?!remove)(?!save).+)$'
 cmd_notes_help = '''
 <code>follow notes [name]</code>
 	Gets the note <code>[name]</code>
@@ -105,7 +105,7 @@ cmd_notes_list_help = '''
 	Lists your notes
 '''
 
-cmd_execnotes_add = r'^follow e(?:xec)?n(?:otes?)? add (.+)\n([\s\S]+)$'
+cmd_execnotes_add = r'^follow e(?:xec)?n(?:otes?)? (?:add|save) (.+)\n([\s\S]+)$'
 cmd_execnotes_add_respond = '200: Operation add execnote complete'
 cmd_execnotes_add_help = '''
 <code>follow execnotes add [name]
@@ -120,7 +120,7 @@ cmd_execnotes_remove_help = '''
 	Removes the execnote <code>[name]</code>
 '''
 
-cmd_execnotes = r'^follow e(?:xec)?n(?:otes?)? ((?!add)(?!remove)(?!show).+)$'
+cmd_execnotes = r'^follow e(?:xec)?n(?:otes?)? ((?!add)(?!remove)(?!show)(?!save).+)$'
 cmd_execnotes_help = '''
 <code>follow execnotes [name]</code>
 	Runs the execnote <code>[name]</code>
