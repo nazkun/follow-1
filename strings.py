@@ -132,7 +132,7 @@ cmd_execnotes_show_help = '''
 	Shows the code for the execnote <code>[name]</code>
 '''
 
-cmd_execnotes_list = r'^follow e(?$xec)?n(?:otes?)?$'
+cmd_execnotes_list = r'^follow e(?:xec)?n(?:otes?)?$'
 cmd_execnotes_list_respond = '''Execnotes:
 <code>{}</code>'''
 cmd_execnotes_list_help = '''
