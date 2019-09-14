@@ -482,7 +482,7 @@ async def ignore_enable(e):
 			user = e.chat_id
 		else:
 			user = await helper.give_user_id(user, e.client)
-	if user in helper.db['ignored']:
+	if user not in helper.db['ignored']:
 		helper.db['ignored'].append(user)
 		if await helper.asave_db(e):
 			await e.reply(strings.cmd_ignore_enable_respond)
@@ -503,7 +503,7 @@ async def ignore_disable(e):
 			user = e.chat_id
 		else:
 			user = await helper.give_user_id(user, e.client)
-	if user not in helper.db['ignored']:
+	if user in helper.db['ignored']:
 		helper.db['ignored'].remove(user)
 		if await helper.asave_db(e):
 			await e.reply(strings.cmd_ignore_disable_respond)
