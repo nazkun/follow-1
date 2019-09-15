@@ -44,7 +44,6 @@ Boi, this is gonna be hard.
 
 - Fork this repo (private please)
 - Follow the [installation steps](#installation) (pull your repo instead of mine)
-- Create a file named `Procfile` with the contents `app: python3 follow.py`
 - Login to Heroku
 - New App
 - Push to Heroku  
