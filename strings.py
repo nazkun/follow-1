@@ -285,3 +285,21 @@ cmd_ignore_disable_help = '''
 <code>follow ignore disable</code> <i>(as reply)</i>
 	Un-ignores <code>[user]</code>
 '''
+
+cmd_flydia_enable = r'^follow f(?:orce)?lydia (?:enable|[Tt]rue)(?: (.+))?$'
+cmd_flydia_enable_respond = 'Lydia enabled in groups!'
+cmd_flydia_enable_already = 'Lydia is already enabled in groups!'
+cmd_flydia_enable_help = '''
+<code>follow flydia enable [user]</code>
+<code>follow flydia enable</code> <i>(as reply)</i>
+	Enable lydia for <code>[user]</code> in groups
+'''
+
+cmd_flydia_disable = r'^follow f(?:orce)?lydia (?:disable|[Ff]alse)(?: (.+))?$'
+cmd_flydia_disable_respond = 'Lydia disabled in groups!'
+cmd_flydia_disable_already = 'Lydia is already disabled in groups!'
+cmd_flydia_disable_help = '''
+<code>follow flydia disable [user]</code>
+<code>follow flydia disable</code> <i>(as reply)</i>
+	Disable lydia for <code>[user]</code> in groups
+'''

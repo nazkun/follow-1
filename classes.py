@@ -2,7 +2,8 @@ from config import default_flags
 
 class flags:
 	def __init__(self, disable_defaults=False, *, noall=None, crawler=None,
-	lydia=None, adminreport=None, noerr=None, msgcount=None, ignore=None):
+	lydia=None, adminreport=None, noerr=None, msgcount=None, ignore=None,
+	flydia=None):
 		for flag in default_flags:
 			self.__dict__[flag] = default_flags[flag]
 		def iin(flag, rflag):
@@ -18,13 +19,14 @@ class flags:
 		self.noerr = iin('noerr', noerr)
 		self.msgcount = iin('msgcount', msgcount)
 		self.ignore = iin('ignore', ignore)
+		self.flydia = iin('flydia', flydia)
 
 	def __repr__(self):
 		return "".join(
 		(f'flags(noall={self.noall}, crawler={self.crawler}, ',
 		f'lydia={self.lydia}, adminreport={self.adminreport}, ',
 		f'noerr={self.noerr}, msgcount={self.msgcount}, ',
-		f'ignore={self.ignore})')
+		f'ignore={self.ignore}, flydia={self.flydia})')
 		)
 
 	def compare(self, to_be_compared):

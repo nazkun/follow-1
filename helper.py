@@ -46,7 +46,8 @@ named_handlers = []
 restart = []
 lydia_sessions = {}
 lydia_rate = set()
-default_db = {'version': 2, 'notes': {}, 'execnotes': {}, 'nolydia': [], 'ignored': []}
+default_db = {'version': 3, 'notes': {}, 'execnotes': {}, 'nolydia': [],
+'ignored': [], 'flydia': []}
 db = default_db
 insults = []
 messages = set()
@@ -57,6 +58,9 @@ def load_db():
 			db = json.load(fyle)
 		if db['version'] == 1:
 			db['ignored'] = []
+			db['version'] += 1
+		if db['version'] == 2:
+			db['flydia'] = []
 			db['version'] += 1
 	except Exception:
 		pass
@@ -323,7 +327,7 @@ def traverse_json(json_to_be_traversed, traverse_path):
 		return json.dumps(js, indent=2, sort_keys=True)
 	for traverse in traverse_path.split(strings.traverse_seperator):
 		js = js[traverse]
-	return json.dumps(js, indent=2, sort_keys=True) if isinstance(js, dict) else js
+	return json.dumps(js, indent=2, sort_keys=True) if isinstance(js, (dict, list)) else js
 
 def convert_windows_newlines(text):
 	return re.sub('\n', '\r\n', text)

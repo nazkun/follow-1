@@ -515,3 +515,73 @@ async def ignore(e):
 	if e.is_private or e.mentioned:
 		if e.from_id in helper.db['ignored']:
 			await e.client.send_read_acknowledge(e.chat_id, e, clear_mentions=True)
+
+@helper.register(events.NewMessage(incoming=True), flags=flags(True, flydia=True))
+async def flydia_respond(e):
+	if e.is_private:
+		return
+	if e.from_id not in helper.db['flydia']:
+		return
+	if not helper.coffeehouse_enabled:
+		return
+	if e.from_id in helper.lydia_rate:
+		return
+	if not e.mentioned:
+		return
+	helper.lydia_rate.add(e.from_id)
+	chat = await e.get_sender()
+	if chat.verified or chat.bot:
+		return
+	async with e.client.action(e.chat_id, 'typing'):
+		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
+		respond = await helper.lydia_think(e.client.loop, session, e.text)
+		# If lydia is disabled in groups while it's processing,
+		if e.from_id not in helper.db['flydia']:
+			helper.lydia_rate.remove(e.from_id)
+			return
+		await e.respond(html.escape(respond), reply_to=None if not e.is_reply else e.id)
+	helper.lydia_rate.remove(e.from_id)
+
+@helper.register(strings.cmd_flydia_enable)
+async def flydia_enable(e):
+	if not config.lydia_api or not helper.coffeehouse_enabled:
+		await e.reply(strings.no_lydia)
+		return
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			await e.reply(strings.user_required)
+			return
+		else:
+			user = await helper.give_user_id(user, e.client)
+	if user not in helper.db['flydia']:
+		helper.db['flydia'].append(user)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_flydia_enable_respond)
+	else:
+		await e.reply(strings.cmd_flydia_enable_already)
+
+@helper.register(strings.cmd_flydia_disable)
+async def flydia_disable(e):
+	if not config.lydia_api or not helper.coffeehouse_enabled:
+		await e.reply(strings.no_lydia)
+		return
+	r = await e.get_reply_message()
+	if r:
+		user = r.from_id
+	else:
+		user = e.pattern_match.group(1)
+		if not user:
+			await e.reply(strings.user_required)
+			return
+		else:
+			user = await helper.give_user_id(user, e.client)
+	if user in helper.db['flydia']:
+		helper.db['flydia'].remove(user)
+		if await helper.asave_db(e):
+			await e.reply(strings.cmd_flydia_disable_respond)
+	else:
+		await e.reply(strings.cmd_flydia_disable_already)
