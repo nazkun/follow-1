@@ -108,6 +108,10 @@ Also, I don't expect it to get big.
 2. If you don't like it, create follow-notabs
 3. Can we stop the Tabs vs. Spaces war now?
 
+##### This is barely written in Python/it sucks
+
+Hey, at least it works and doesn't have any backdoors.
+
 ##### Support chat?
 
 As I said in [Why's the name 'FAQn't'?](#whys-the-name-faqnt), I don't expect it to get big.  
