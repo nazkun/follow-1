@@ -303,3 +303,14 @@ cmd_flydia_disable_help = '''
 <code>follow flydia disable</code> <i>(as reply)</i>
 	Disable lydia for <code>[user]</code> in groups
 '''
+
+cmd_read = r'^follow (?:(q)(?:uick)?[\-_]?)?read(?: (.+))?\n(.+)$'
+cmd_read_respond = '200: Operation read complete'
+cmd_read_help = '''
+<code>follow read [optional follower id/name]
+[chat]</code>
+<code>follow qread [optional follower id/name]
+[chat]</code>
+	Reads <code>[chat]</code> as <code>[optional follower id/name]</code>
+	Quickly reads <code>[chat]</code> as <code>[optional follower id/name]</code>
+'''

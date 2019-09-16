@@ -585,3 +585,28 @@ async def flydia_disable(e):
 			await e.reply(strings.cmd_flydia_disable_respond)
 	else:
 		await e.reply(strings.cmd_flydia_disable_already)
+
+@helper.register(strings.cmd_read, 10)
+async def read_messages(e):
+	quick = e.pattern_match.group(1)
+	chat = helper.give_chat(e.pattern_match.group(3), await e.get_chat())
+	clients = e.pattern_match.group(2)
+	if clients:
+		clients = helper.give_client(helper.give_id(clients))
+		if not clients:
+			await e.reply(strings.follow_who.format(e.pattern_match.group(1)))
+			return
+	else:
+		clients = [e.client]
+	async def _read_messages(client, chat):
+		await client.send_read_acknowledge(chat, clear_mentions=True)
+	if quick:
+		await asyncio.wait([
+			_read_messages(client, chat)
+			for client in clients
+		])
+		await e.reply(strings.cmd_read_respond)
+	else:
+		for client in clients:
+			await _read_messages(client, chat)
+			await e.reply(strings.cmd_read_respond)
