@@ -327,13 +327,10 @@ async def crawler(e):
 
 @helper.register(strings.cmd_json)
 async def json(e):
-#	print(e.input_chat)
 	r = await e.get_reply_message()
-#	quit()
 	if not r:
 		r = e
-#	This code is also stolen from Twittie (t.me/twitface)
-	js = r.to_json(indent=4, sort_keys=True)
+	js = r.to_dict()
 	await e.reply('<code>' +
 	html.escape(str(helper.traverse_json(js, e.pattern_match.group(1)))) +
 	'</code>')
@@ -518,15 +515,11 @@ async def ignore(e):
 
 @helper.register(events.NewMessage(incoming=True), flags=flags(True, flydia=True))
 async def flydia_respond(e):
-	if e.is_private:
+	if e.is_private or not helper.coffeehouse_enabled or not e.mentioned:
 		return
 	if e.from_id not in helper.db['flydia']:
 		return
-	if not helper.coffeehouse_enabled:
-		return
 	if e.from_id in helper.lydia_rate:
-		return
-	if not e.mentioned:
 		return
 	helper.lydia_rate.add(e.from_id)
 	chat = await e.get_sender()
@@ -555,8 +548,7 @@ async def flydia_enable(e):
 		if not user:
 			await e.reply(strings.user_required)
 			return
-		else:
-			user = await helper.give_user_id(user, e.client)
+		user = await helper.give_user_id(user, e.client)
 	if user not in helper.db['flydia']:
 		helper.db['flydia'].append(user)
 		if await helper.asave_db(e):
@@ -577,8 +569,7 @@ async def flydia_disable(e):
 		if not user:
 			await e.reply(strings.user_required)
 			return
-		else:
-			user = await helper.give_user_id(user, e.client)
+		user = await helper.give_user_id(user, e.client)
 	if user in helper.db['flydia']:
 		helper.db['flydia'].remove(user)
 		if await helper.asave_db(e):
