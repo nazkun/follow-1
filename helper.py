@@ -357,7 +357,4 @@ async def give_user_id(user, client):
 	try:
 		return int(user)
 	except ValueError:
-		try:
-			return (await client.get_input_entity(user)).user_id
-		except Exception:
-			return (await client.get_entity(user)).id
+		return await client.get_peer_id(user)
