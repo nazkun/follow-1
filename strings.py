@@ -250,14 +250,14 @@ cmd_lydia_disable_help = '''
 cmd_admin_report = r'@admins?|^[/\.!#](?:report|admins?)(?:$|\W)'
 admin_report = '''Admin report!
 
-<a href='https://t.me/c/{chat.id}/{e.id}'>Chat</a>: <code>{chat.id}</code>
+<a href='{link}'>Chat</a>: <code>{chat.id}</code>
 <a href='tg://user?id={reporter.id}'>Reporter</a>: <code>{reporter.id}</code>
 <a href='tg://user?id={reportee.id}'>Reportee</a>: <code>{reportee.id}</code>
 Remark: <code>{remark}</code>
 Reported Message: <code>{reported_message}</code>'''
 admin_report_no_reportee = '''Admin report!
 
-<a href='https://t.me/c/{chat.id}/{e.id}'>Chat</a>: <code>{chat.id}</code>
+<a href='{link}'>Chat</a>: <code>{chat.id}</code>
 <a href='tg://user?id={reporter.id}'>Reporter</a>: <code>{reporter.id}</code>
 Remark: <code>{remark}</code>'''
 

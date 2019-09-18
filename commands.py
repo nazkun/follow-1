@@ -435,22 +435,26 @@ async def admin_report(e):
 	if e.chat_id == config.log_chat:
 #		No recursion please
 		return
+	reporter = await e.get_sender()
+	chat = await e.get_chat()
+	if not chat.username:
+		unmark_cid = await e.client.get_peer_id(chat.id, False)
+		link = f'https://t.me/c/{unmark_cid}/{e.id}'
+	else:
+		link = f'https://t.me/{chat.username}/{e.id}'
 	if e.is_reply:
-		reporter = await e.get_sender()
 		r = await e.get_reply_message()
 		reportee = await r.get_sender()
-		chat = await e.get_chat()
 
 		await e.client.send_message(config.log_chat, strings.admin_report.format(
 		reporter=reporter, reportee=reportee, chat=chat, e=e, r=r,
-		remark=html.escape(str(e.text)),
-		reported_message=html.escape(str(r.text))))
+		remark=html.escape(str(e.text)), link=link,
+		reported_message=html.escape(str(r.text))),
+		link_preview=False)
 	else:
-		reporter = await e.get_sender()
-		chat = await e.get_chat()
-
 		await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
-		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text))))
+		reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text)),
+		link=link), link_preview=False)
 
 @helper.register(strings.cmd_brief)
 async def brief(e):
