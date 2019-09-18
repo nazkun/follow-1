@@ -289,7 +289,7 @@ async def unafk(e):
 async def respond_to_afk(e):
 	if (e.is_private or e.mentioned) and helper.afk:
 		try:
-			times = helper.afk_responses[e.cjat_id]
+			times = helper.afk_responses[e.chat_id]
 		except KeyError:
 			times = 0
 			helper.afk_responses[e.chat_id] = times
