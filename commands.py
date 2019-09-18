@@ -287,14 +287,14 @@ async def unafk(e):
 
 @helper.register(events.NewMessage(incoming=True))
 async def respond_to_afk(e):
-	if e.is_private and helper.afk:
+	if (e.is_private or e.mentioned) and helper.afk:
 		try:
-			times = helper.afk_responses[e.from_id]
+			times = helper.afk_responses[e.cjat_id]
 		except KeyError:
 			times = 0
-			helper.afk_responses[e.from_id] = times
+			helper.afk_responses[e.chat_id] = times
 		if not times % 5:
-			helper.afk_responses[e.from_id] += 1
+			helper.afk_responses[e.chat_id] += 1
 			user = await e.get_sender()
 			if user.verified or user.bot:
 				return

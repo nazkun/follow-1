@@ -10,7 +10,8 @@
 # msgcount (counts all the messages you have and show it in 'follow info')
 # ignore (if a user is ignored, ignore that user on this follower)
 # flydia (have lydia talk to flydia'd (lydia in groups) users?)
-default_flags = {'lydia': True, 'adminreport': True, 'msgcount': True, 'ignore': True, 'flydia': True}
+# afk (afk responses from this follower?)
+default_flags = {'lydia': True, 'adminreport': True, 'msgcount': True, 'ignore': True, 'flydia': True, 'afk': True}
 # Chat used for logs
 log_chat = -1001172135061
 # Send help text as file?
