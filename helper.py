@@ -326,6 +326,10 @@ def traverse_json(json_to_be_traversed, traverse_path):
 	if not traverse_path:
 		return json.dumps(js, indent=2, sort_keys=True)
 	for traverse in traverse_path.split(strings.traverse_seperator):
+		try:
+			traverse = int(traverse)
+		except ValueError:
+			pass
 		js = js[traverse]
 	return json.dumps(js, indent=2, sort_keys=True) if isinstance(js, (dict, list)) else js
 
