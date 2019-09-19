@@ -330,7 +330,7 @@ async def json(e):
 	r = await e.get_reply_message()
 	if not r:
 		r = e
-	js = r.to_dict()
+	js = r.to_json()
 	await e.reply('<code>' +
 	html.escape(str(helper.traverse_json(js, e.pattern_match.group(1)))) +
 	'</code>')
