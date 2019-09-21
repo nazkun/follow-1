@@ -298,7 +298,7 @@ async def auto_recover():
 	async def internal_recover(fwlr):
 		autorec.info('Recovering: %s', fwlr.identifier.name)
 		try:
-			followers[fwlr.enu].me = await fwlr.client.get_me()
+			fwlr.me = await fwlr.client.get_me()
 			autorec.info('%s recovered.', fwlr.identifier.name)
 		except Exception:
 			autorec.error('Got exception')
