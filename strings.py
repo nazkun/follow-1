@@ -177,7 +177,7 @@ cmd_dcinfo_help = '''
 	Gets the country, nearest DC and current DC
 '''
 
-cmd_cas = r'^follow cas (\d+)$'
+cmd_cas = r'^follow cas (.+)$'
 cmd_cas_processing = 'Processing...'
 cmd_cas_respond = '''<a href="https://combot.org/cas/query?user_id={user_id}">Record found!</a>
 Offenses: {offenses}

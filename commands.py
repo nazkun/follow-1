@@ -272,7 +272,9 @@ async def dcinfo(e):
 @helper.register(strings.cmd_cas)
 async def cas(e):
 	r = await e.reply(strings.cmd_cas_processing)
-	await r.edit(await helper.check_cas(e.client.loop, e.pattern_match.group(1)))
+	id = e.pattern_match.group(1)
+	id = await helper.give_user_id(id, e.client)
+	await r.edit(await helper.check_cas(e.client.loop, id))
 
 @helper.register(strings.cmd_afk)
 async def afk(e):
