@@ -314,3 +314,15 @@ cmd_read_help = '''
 	Reads <code>[chat]</code> as <code>[optional follower id/name]</code>
 	Quickly reads <code>[chat]</code> as <code>[optional follower id/name]</code>
 '''
+
+cmd_log = r'^follow (s?)log$'
+cmd_log_reply = 'Reply?'
+cmd_slog_log_from = 'Begin of super log'
+cmd_slog_log_to = 'End of super log'
+cmd_slog_respond = '<a href="{}">200: Operation super log complete</a>'
+cmd_log_help = '''
+<code>follow log</code>
+<code>follow slog</code>
+	Logs the replied to message
+	Logs the replied to message and everything in between
+'''

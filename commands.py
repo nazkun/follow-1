@@ -220,10 +220,7 @@ async def execnotes_list(e):
 
 @helper.register(strings.cmd_restart, 10)
 async def restart(e):
-#	if not e.pattern_match.group(1):
 	r = await e.reply(strings.cmd_restart_respond)
-#	else:
-#		r = await e.reply(strings.cmd_restart_restarted)
 	for fwlr in helper.followers:
 		if fwlr.client == e.client:
 			helper.restart = [str(fwlr.identifier.int_id),
@@ -607,3 +604,32 @@ async def read_messages(e):
 		for client in clients:
 			await _read_messages(client, chat)
 			await e.reply(strings.cmd_read_respond)
+
+@helper.register(strings.cmd_log)
+async def log_messages(e):
+	super = e.pattern_match.group(1)
+	r = await e.get_reply_message()
+	if not r:
+		await e.reply(strings.cmd_log_reply)
+		return
+	if not super:
+		await e.delete()
+		await r.forward_to(config.log_chat)
+		return
+	msgs = []
+	_msgs = await e.client.get_messages(e.chat_id, min_id=r.id-1, max_id=e.id,
+	reverse=True)
+	async def _fwd(fwd):
+		await e.client.forward_messages(config.log_chat, fwd)
+	lf = await e.client.send_message(config.log_chat, strings.cmd_slog_log_from)
+	for msg in _msgs:
+		msgs.append(msg)
+		if len(msgs) >= 100:
+			await _fwd(msgs)
+			msgs.clear()
+	if msgs:
+		await _fwd(msgs)
+	await lf.respond(strings.cmd_slog_log_to)
+	cid = await e.client.get_peer_id(lf.chat_id, False)
+	link = f'https://t.me/c/{cid}/{lf.id}'
+	await e.reply(strings.cmd_slog_respond.format(link))
