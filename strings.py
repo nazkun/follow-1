@@ -320,7 +320,7 @@ cmd_log_reply = 'Reply?'
 cmd_slog_log_from = 'Begin of super log'
 cmd_slog_log_to = 'End of super log'
 cmd_slog_respond = '<a href="{}">200: Operation super log complete</a>'
-cmd_log_help = '''
+cmd_log_messages_help = '''
 <code>follow log</code>
 <code>follow slog</code>
 	Logs the replied to message
