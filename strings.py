@@ -12,6 +12,7 @@ no_lydia = 'Lydia is not enabled!'
 user_required = '404: No user found'
 speedtest_disabled = 'Speedtest is not enabled!'
 newer_db = 'The database\'s version ({}) is newer than expected ({})'
+reply = 'Reply?'
 
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
@@ -316,7 +317,6 @@ cmd_read_help = '''
 '''
 
 cmd_log = r'^follow (s?)log$'
-cmd_log_reply = 'Reply?'
 cmd_slog_log_from = 'Begin of super log'
 cmd_slog_log_to = 'End of super log'
 cmd_slog_respond = '<a href="{}">200: Operation super log complete</a>'
@@ -325,4 +325,11 @@ cmd_log_messages_help = '''
 <code>follow slog</code>
 	Logs the replied to message
 	Logs the replied to message and everything in between
+'''
+
+cmd_stickertext = r'^follow s(?:ticker)?t(?:ext)? ([\s\S]+)$'
+cmd_stickertext_sticker = 'Yup, definitely a sticker.'
+cmd_stickertext_help = '''
+<code>follow st [text]</code>
+	Hides <code>[text]</code> behind the replied sticker
 '''

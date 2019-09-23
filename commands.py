@@ -610,7 +610,7 @@ async def log_messages(e):
 	super = e.pattern_match.group(1)
 	r = await e.get_reply_message()
 	if not r:
-		await e.reply(strings.cmd_log_reply)
+		await e.reply(strings.reply)
 		return
 	if not super:
 		await e.delete()
@@ -633,3 +633,17 @@ async def log_messages(e):
 	cid = await e.client.get_peer_id(lf.chat_id, False)
 	link = f'https://t.me/c/{cid}/{lf.id}'
 	await e.reply(strings.cmd_slog_respond.format(link))
+
+@helper.register(strings.cmd_stickertext)
+async def stickertext(e):
+	r = await e.get_reply_message()
+	if not r:
+		await e.reply(strings.reply)
+		return
+	if not r.sticker:
+		await e.reply(strings.cmd_stickertext_sticker)
+		return
+	await r.respond(e.pattern_match.group(1), file=r.media)
+	await e.delete()
+	if r.out:
+		await r.delete()
