@@ -359,6 +359,7 @@ async def asave_db(e):
 
 async def give_user_id(user, client):
 	try:
-		return int(user)
+		user =  int(user)
 	except ValueError:
-		return await client.get_peer_id(user)
+		pass
+	return await client.get_peer_id(user)
