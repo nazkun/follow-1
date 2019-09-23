@@ -610,8 +610,8 @@ async def read_messages(e):
 
 @helper.register(strings.cmd_log)
 async def log_messages(e):
-	super = e.pattern_match.group(2)
-	silent = e.pattern_match.group(1)
+	super = e.pattern_match.group(1)
+	silent = e.pattern_match.group(2)
 	r = await e.get_reply_message()
 	if not r:
 		await e.reply(strings.reply)
