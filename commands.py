@@ -520,11 +520,14 @@ async def ignore(e):
 async def flydia_respond(e):
 	if e.is_private or not helper.coffeehouse_enabled or not e.mentioned:
 		return
-	if e.from_id not in helper.db['flydia']:
+	if e.from_id not in helper.db['flydia'] and e.chat_id not in helper.db['flydia']:
 		return
 	if e.from_id in helper.lydia_rate:
 		return
-	helper.lydia_rate.add(e.from_id)
+	activator = e.from_id
+	if e.chat_id in helper.db['flydia']:
+		activator = e.chat_id
+	helper.lydia_rate.add(activator)
 	chat = await e.get_sender()
 	if chat.verified or chat.bot:
 		return
@@ -532,11 +535,11 @@ async def flydia_respond(e):
 		session = await helper.give_lydia_session(e.client.loop, e.chat_id)
 		respond = await helper.lydia_think(e.client.loop, session, e.text)
 		# If lydia is disabled in groups while it's processing,
-		if e.from_id not in helper.db['flydia']:
-			helper.lydia_rate.remove(e.from_id)
+		if e.from_id not in helper.db['flydia'] and e.chat_id not in helper.db['flydia']:
+			helper.lydia_rate.remove(activator)
 			return
 		await e.respond(html.escape(respond), reply_to=None if not e.is_reply else e.id)
-	helper.lydia_rate.remove(e.from_id)
+	helper.lydia_rate.remove(activator)
 
 @helper.register(strings.cmd_flydia_enable)
 async def flydia_enable(e):
