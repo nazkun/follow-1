@@ -610,7 +610,8 @@ async def read_messages(e):
 
 @helper.register(strings.cmd_log)
 async def log_messages(e):
-	super = e.pattern_match.group(1)
+	super = e.pattern_match.group(2)
+	silent = e.pattern_match.group(1)
 	r = await e.get_reply_message()
 	if not r:
 		await e.reply(strings.reply)
@@ -619,6 +620,8 @@ async def log_messages(e):
 		await e.delete()
 		await r.forward_to(config.log_chat)
 		return
+	if silent:
+		await e.delete()
 	msgs = []
 	_msgs = await e.client.get_messages(e.chat_id, min_id=r.id-1, max_id=e.id,
 	reverse=True)
@@ -635,7 +638,8 @@ async def log_messages(e):
 	await lf.respond(strings.cmd_slog_log_to)
 	cid = await e.client.get_peer_id(lf.chat_id, False)
 	link = f'https://t.me/c/{cid}/{lf.id}'
-	await e.reply(strings.cmd_slog_respond.format(link))
+	if not silent:
+		await e.reply(strings.cmd_slog_respond.format(link))
 
 @helper.register(strings.cmd_stickertext)
 async def stickertext(e):

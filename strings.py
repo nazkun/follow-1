@@ -316,15 +316,17 @@ cmd_read_help = '''
 	Quickly reads <code>[chat]</code> as <code>[optional follower id/name]</code>
 '''
 
-cmd_log = r'^follow (s?)log$'
+cmd_log = r'^follow (s?)(s?)log$'
 cmd_slog_log_from = 'Begin of super log'
 cmd_slog_log_to = 'End of super log'
 cmd_slog_respond = '<a href="{}">200: Operation super log complete</a>'
 cmd_log_messages_help = '''
 <code>follow log</code>
 <code>follow slog</code>
+<code>follow sslog</code>
 	Logs the replied to message
-	Logs the replied to message and everything in between
+	Logs the replied to message and everything in between (super log)
+	Silent super log
 '''
 
 cmd_stickertext = r'^follow s(?:ticker)?t(?:ext)? ([\s\S]+)$'
