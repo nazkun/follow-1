@@ -662,13 +662,13 @@ async def stickertext(e):
 @helper.register(strings.cmd_selfpurge)
 async def selfpurgw(e):
 	async def _purge(msgs):
-		await e.client.delete_messages(e.chat_id, [msg.id for msg in msgs])
-	_msgs = {e}
+		await e.client.delete_messages(e.chat_id, msgs)
+	_msgs = {e.id}
 	amount = int(e.pattern_match.group(1))
 	msgs = await e.client.get_messages(e.chat_id, limit=amount, from_user='me',
 	max_id=e.id)
 	for msg in msgs:
-		_msgs.add(msg)
+		_msgs.add(msg.id)
 		if len(_msgs) >= 100:
 			await _purge(_msgs)
 			_msgs.clear()
