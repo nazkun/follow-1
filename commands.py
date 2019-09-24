@@ -125,7 +125,7 @@ async def speedtest(e):
 		return url
 	url = await e.client.loop.run_in_executor(None, _st, speedtester)
 	await reply.delete()
-	await e.reply(strings.cmd_speedtest_respond.format, file=url)
+	await e.reply(strings.cmd_speedtest_respond, file=url)
 
 @helper.register(strings.cmd_cli, 50)
 async def cli(e):
