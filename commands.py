@@ -1,3 +1,4 @@
+import time
 import html
 import asyncio
 import random
@@ -111,17 +112,20 @@ async def speedtest(e):
 		return
 	text = strings.cmd_speedtest_processing
 	reply = await e.reply(text)
-	speedtester = Speedtest()
-	speedtester.download()
+	def _st():
+		speedtester = Speedtest()
+		speedtester.download()
+		return speedtester
+	speedtester = await e.client.loop.run_in_executor(None, _st)
 	text += strings.cmd_speedtest_upload
-	try:
-		await reply.edit(text)
-	except Exception:
-		pass
-	speedtester.upload()
-	url = speedtester.results.share()
+	await reply.edit(text)
+	def _st(speedtester):
+		speedtester.upload()
+		url = speedtester.results.share()
+		return url
+	url = await e.client.loop.run_in_executor(None, _st, speedtester)
 	await reply.delete()
-	await e.reply(strings.cmd_speedtest_respond.format(helper.blank_space, url))
+	await e.reply(strings.cmd_speedtest_respond.format, file=url)
 
 @helper.register(strings.cmd_cli, 50)
 async def cli(e):
@@ -680,3 +684,12 @@ async def user(e):
 	user_id = await helper.give_user_id(e.pattern_match.group(1), e.client)
 	link = f'tg://user?id={user_id}'
 	await e.reply(strings.cmd_user_respond.format(link=link, user_id=user_id))
+
+@helper.register(strings.cmd_ping)
+async def ping(e):
+	s = time.time()
+	z = await e.reply(strings.cmd_ping_respond)
+	e = time.time()
+	s = s * 1000 - int(s)
+	e = e * 1000 - int(e)
+	await z.edit(strings.cmd_pong_respond.format(int(e - s)))

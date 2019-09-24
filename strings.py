@@ -64,10 +64,10 @@ cmd_leave_help = '''
 cmd_speedtest = r'^follow speedtest$'
 cmd_speedtest_processing = 'Operation Speedtest:\nTesting Download\n'
 cmd_speedtest_upload = 'Testing Upload'
-cmd_speedtest_respond = '<a href="{1}">{0}</a>200: Operation speedtest complete'
+cmd_speedtest_respond = '200: Operation speedtest complete'
 cmd_speedtest_help = '''
 <code>follow speedtest</code>
-	Does a speedtest (blocking calls are made)
+	Does a speedtest
 '''
 
 cmd_cli = r'^follow cli (.+)$'
@@ -348,3 +348,10 @@ cmd_user_help = '''
 <code>follow user [info of a user]</code>
 	Creates a link to <code>[info of a user]</code>
 '''
+
+cmd_ping = r'^follow p[io]ng$'
+cmd_ping_respond = 'Pong!'
+cmd_pong_respond = 'Pong!\n{}ms'
+cmd_ping_help = '''
+<code>follow ping</code>
+''' # need i say more?
