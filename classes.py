@@ -23,13 +23,11 @@ class flags:
 		self.afk = iin('afk', afk)
 
 	def __repr__(self):
-		return "".join(
-		(f'flags(noall={self.noall}, crawler={self.crawler}, ',
-		f'lydia={self.lydia}, adminreport={self.adminreport}, ',
-		f'noerr={self.noerr}, msgcount={self.msgcount}, ',
-		f'ignore={self.ignore}, flydia={self.flydia},',
+		return (f'flags(noall={self.noall}, crawler={self.crawler}, '
+		f'lydia={self.lydia}, adminreport={self.adminreport}, '
+		f'noerr={self.noerr}, msgcount={self.msgcount}, '
+		f'ignore={self.ignore}, flydia={self.flydia}, '
 		f'afk={self.afk})')
-		)
 
 	def compare(self, to_be_compared):
 		for flag in to_be_compared.__dict__.keys():
