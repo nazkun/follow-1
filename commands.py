@@ -654,9 +654,10 @@ async def stickertext(e):
 		await e.reply(strings.cmd_stickertext_sticker)
 		return
 	await r.respond(e.pattern_match.group(1), file=r.media)
-	await e.delete()
+	msgs = [e.id]
 	if r.out:
-		await r.delete()
+		msgs.append(r.id)
+	await e.client.delete_messages(e.chat_id, msgs)
 
 @helper.register(strings.cmd_selfpurge)
 async def selfpurgw(e):
