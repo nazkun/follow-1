@@ -629,7 +629,8 @@ async def log_messages(e):
 	if silent:
 		await e.delete()
 	msgs = []
-	_msgs = await e.client.get_messages(e.chat_id, min_id=r.id-1, max_id=e.id,
+	end = int(e.pattern_match.group(3) or e.id)
+	_msgs = await e.client.get_messages(e.chat_id, min_id=r.id-1, max_id=end,
 	reverse=True)
 	async def _fwd(fwd):
 		await e.client.forward_messages(config.log_chat, fwd)

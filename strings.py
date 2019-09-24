@@ -316,7 +316,7 @@ cmd_read_help = '''
 	Quickly reads <code>[chat]</code> as <code>[optional follower id/name]</code>
 '''
 
-cmd_log = r'^follow (s?)(s?)log$'
+cmd_log = r'^follow (s?)(s?)log(?:[\n ](.+))?$'
 cmd_slog_log_from = 'Begin of super log'
 cmd_slog_log_to = 'End of super log'
 cmd_slog_respond = '<a href="{}">200: Operation super log complete</a>'
