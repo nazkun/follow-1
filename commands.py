@@ -629,7 +629,7 @@ async def log_messages(e):
 	if silent:
 		await e.delete()
 	msgs = []
-	end = int(e.pattern_match.group(3) or e.id)
+	end = int(e.pattern_match.group(3) or e.id - 1) + 1
 	_msgs = await e.client.get_messages(e.chat_id, min_id=r.id-1, max_id=end,
 	reverse=True)
 	async def _fwd(fwd):
