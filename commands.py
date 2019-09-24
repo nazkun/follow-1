@@ -4,6 +4,7 @@ import random
 from io import BytesIO
 from traceback import format_exc
 from telethon import utils, events, functions, types, errors
+from telethon.tl.patched import Message
 import follow
 try:
 	from speedtest import Speedtest
@@ -630,7 +631,8 @@ async def log_messages(e):
 		await e.client.forward_messages(config.log_chat, fwd)
 	lf = await e.client.send_message(config.log_chat, strings.cmd_slog_log_from)
 	for msg in _msgs:
-		msgs.append(msg)
+		if type(msg) == Message:
+			msgs.append(msg)
 		if len(msgs) >= 100:
 			await _fwd(msgs)
 			msgs.clear()
