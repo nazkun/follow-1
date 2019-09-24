@@ -342,7 +342,7 @@ cmd_selfpurge_help = '''
 	Purges <code>[amount of messages]</code> that you've sent
 '''
 
-cmd_user = r'^follow user (.+)$'
+cmd_user = r'^follow user(?: (.+))?$'
 cmd_user_respond = '<a href="{link}">Permanant link to </a><code>{user_id}</code>'
 cmd_user_help = '''
 <code>follow user [info of a user]</code>

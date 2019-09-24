@@ -683,11 +683,15 @@ async def selfpurgw(e):
 async def user(e):
 	r = await e.get_reply_message()
 	if not r:
-		user_id = await helper.give_user_id(e.pattern_match.group(1), e.client)
+		user_id = e.pattern_match.group(1)
+		if not user_id:
+			await e.reply(strings.reply)
+			return
+		user_id = await helper.give_user_id(user_id, e.client)
 	else:
-		user_id = e.from_id
+		user_id = r.from_id
 		if r.fwd_from:
-			user_id = e.fwd_from.from_id
+			user_id = r.fwd_from.from_id
 	link = f'tg://user?id={user_id}'
 	await e.reply(strings.cmd_user_respond.format(link=link, user_id=user_id))
 
