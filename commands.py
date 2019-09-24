@@ -673,3 +673,9 @@ async def selfpurgw(e):
 			_msgs.clear()
 	if _msgs:
 		await _purge(_msgs)
+
+@helper.register(strings.cmd_user)
+async def user(e):
+	user_id = await helper.give_user_id(e.pattern_match.group(1), e.client)
+	link = f'tg://user?id={user_id}'
+	await e.reply(strings.cmd_user_respond.format(link=link, user_id=user_id))
