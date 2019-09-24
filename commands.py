@@ -654,21 +654,21 @@ async def stickertext(e):
 		await e.reply(strings.cmd_stickertext_sticker)
 		return
 	await r.respond(e.pattern_match.group(1), file=r.media)
-	msgs = [e.id]
+	msgs = {e.id}
 	if r.out:
-		msgs.append(r.id)
+		msgs.add(r.id)
 	await e.client.delete_messages(e.chat_id, msgs)
 
 @helper.register(strings.cmd_selfpurge)
 async def selfpurgw(e):
 	async def _purge(msgs):
 		await e.client.delete_messages(e.chat_id, [msg.id for msg in msgs])
-	_msgs = [e]
+	_msgs = {e}
 	amount = int(e.pattern_match.group(1))
 	msgs = await e.client.get_messages(e.chat_id, limit=amount, from_user='me',
 	max_id=e.id)
 	for msg in msgs:
-		_msgs.append(msg)
+		_msgs.add(msg)
 		if len(_msgs) >= 100:
 			await _purge(_msgs)
 			_msgs.clear()
