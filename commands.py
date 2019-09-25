@@ -307,7 +307,10 @@ async def respond_to_afk(e):
 @helper.register(events.NewMessage(incoming=True), flags=flags(True, crawler=True))
 @helper.register(events.MessageEdited(incoming=True), flags=flags(True, crawler=True))
 async def crawler(e):
-	pattern_match = helper.invite_re.findall(e.text)
+	try:
+		pattern_match = helper.invite_re.findall(e.text)
+	except TypeError:
+		return
 	for invite in set(pattern_match):
 		inv_info = utils.resolve_invite_link(invite)
 		if inv_info[1]:
