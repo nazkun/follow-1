@@ -668,7 +668,7 @@ async def stickertext(e):
 	await e.client.delete_messages(e.chat_id, msgs)
 
 @helper.register(strings.cmd_selfpurge)
-async def selfpurgw(e):
+async def selfpurge(e):
 	async def _purge(msgs):
 		await e.client.delete_messages(e.chat_id, msgs)
 	_msgs = {e.id}
@@ -707,3 +707,25 @@ async def ping(e):
 	s = s * 1000 - int(s)
 	e = e * 1000 - int(e)
 	await z.edit(strings.cmd_pong_respond.format(int(e - s)))
+
+@helper.register(strings.cmd_admins)
+async def admins(e):
+	mention = e.pattern_match.group(1)
+	chat = e.pattern_match.group(2) or e.chat_id
+	chat = await helper.give_user_id(helper.give_chat(chat, await e.get_chat()), e.client)
+	admins = await e.client.get_participants(chat,
+	filter=types.ChannelParticipantsAdmins())
+	text = strings.cmd_admins_respond
+	for admin in admins:
+		if not admin.bot and not admin.deleted:
+			text += strings.cmd_admins_sub.format(admin=admin)
+	mtext = strings.cmd_admins_respond
+	for admin in admins:
+		if not admin.bot and not admin.deleted:
+			mtext += strings.cmd_admins_msub.format(admin=admin)
+	if mention:
+		await e.reply(mtext)
+		return
+	z = await e.reply(text)
+	if text != mtext:
+		await z.edit(mtext)

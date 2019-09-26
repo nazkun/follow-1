@@ -355,3 +355,12 @@ cmd_pong_respond = 'Pong!\n{}ms'
 cmd_ping_help = '''
 <code>follow ping</code>
 ''' # need i say more?
+
+cmd_admins = r'^follow (m?)admins?(?: (.+))?$'
+cmd_admins_respond = 'Admins:\n'
+cmd_admins_sub = '{admin.first_name} (<code>{admin.id}</code>)\n'
+cmd_admins_msub = '<a href="tg://user?id={admin.id}">{admin.first_name}</a> (<code>{admin.id}</code>)\n'
+cmd_admins_help = '''
+<code>follow admins</code>
+	Lists the admins in the chat (no mention)
+'''
