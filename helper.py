@@ -178,14 +178,16 @@ def give_help(you):
 			help_text += handler.doc
 	return help_text.expandtabs()
 
-def execute_cli(command):
-	command = command.split(' ')
-	try:
-		output = subprocess.check_output(command,
-		universal_newlines=True, stderr=subprocess.STDOUT)
-	except subprocess.CalledProcessError as error:
-		output = error.output
-	return output
+async def execute_cli(command, loop):
+	def _execute_cli(command):
+		command = command.split(' ')
+		try:
+			output = subprocess.check_output(command,
+			universal_newlines=True, stderr=subprocess.STDOUT)
+		except subprocess.CalledProcessError as error:
+			output = error.output
+		return output
+	return await loop.run_in_executor(None, _execute_cli, command)
 
 def memory_file(file_name, file_content):
 	fyle = BytesIO()
