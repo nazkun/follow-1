@@ -441,7 +441,15 @@ async def admin_report(e):
 		link = f'https://t.me/{chat.username}/{e.id}'
 	if e.is_reply:
 		r = await e.get_reply_message()
-		reportee = await r.get_sender()
+		try:
+			reportee = await r.get_sender()
+		except AttributeError:
+			await e.client.send_message(config.log_chat,
+			strings.admin_report_no_reportee.format(
+			reporter=reporter, chat=chat, e=e,
+			remark=html.escape(str(e.text)), link=link),
+			link_preview=False)
+			return
 
 		await e.client.send_message(config.log_chat, strings.admin_report.format(
 		reporter=reporter, reportee=reportee, chat=chat, e=e, r=r,
