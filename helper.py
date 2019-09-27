@@ -363,3 +363,11 @@ async def give_user_id(user, client):
 	except ValueError:
 		pass
 	return await client.get_peer_id(user)
+
+async def run_code(code, e, r, rr):
+#	This code is stolen from Twittie (https://t.me/twitface)
+	exec(
+		f'async def __ex(e, r, rr): ' +
+		''.join(f'\n {l}'for l in code.split('\n'))
+	)
+	return await locals()['__ex'](e, r, rr)

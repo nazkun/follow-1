@@ -195,13 +195,8 @@ async def execnotes(e):
 	except KeyError:
 		await e.reply(strings.cmd_execnotes_failed.format(note))
 	else:
-#		This code is stolen from Twittie (https://t.me/twitface)
-		exec(
-			f'async def __ex(e, r, rr): ' +
-			''.join(f'\n {l}'for l in code.split('\n'))
-		)
 		r = await e.reply(strings.cmd_execnotes_processing)
-		ret = await locals()['__ex'](e, await e.get_reply_message(), r)
+		ret = await helper.run_code(code, e, await e.get_reply_message(), r)
 		text = strings.cmd_execnotes_respond
 		if ret is not None:
 			text = strings.cmd_execnotes_returned.format(html.escape(str(ret)))
@@ -238,13 +233,8 @@ async def restart(e):
 @helper.register(strings.cmd_exec_py, 50)
 async def exec_py(e):
 	code = e.pattern_match.group(1)
-#	This code is stolen from Twittie (https://t.me/twitface)
-	exec(
-		f'async def __ex(e, r, rr): ' +
-		''.join(f'\n {l}'for l in code.split('\n'))
-	)
 	r = await e.reply(strings.cmd_exec_py_processing)
-	ret = await locals()['__ex'](e, await e.get_reply_message(), r)
+	ret = await helper.run_code(code, e, await e.get_reply_message(), r)
 	text = strings.cmd_exec_py_respond
 	if ret is not None:
 		text = strings.cmd_exec_py_returned.format(html.escape(str(ret)))
