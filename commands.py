@@ -274,9 +274,9 @@ async def dcinfo(e):
 @helper.register(strings.cmd_cas)
 async def cas(e):
 	r = await e.reply(strings.cmd_cas_processing)
-	id = e.pattern_match.group(1)
-	id = await helper.give_user_id(id, e.client)
-	await r.edit(await helper.check_cas(e.client.loop, id))
+	uid = e.pattern_match.group(1)
+	uid = await helper.give_user_id(uid, e.client)
+	await r.edit(await helper.check_cas(e.client.loop, uid))
 
 @helper.register(strings.cmd_afk)
 async def afk(e):
@@ -465,11 +465,11 @@ async def admin_report(e):
 
 @helper.register(strings.cmd_brief)
 async def brief(e):
-	time = e.pattern_match.group(1)
-	time = float(time if time else 1)
+	brief_time = e.pattern_match.group(1)
+	brief_time = float(brief_time if brief_time else 1)
 	content = e.pattern_match.group(2)
 	await e.edit(content)
-	await asyncio.sleep(time)
+	await asyncio.sleep(brief_time)
 	await e.delete()
 
 @helper.register(events.NewMessage(), flags=flags(True, msgcount=True, noerr=True))
@@ -619,13 +619,13 @@ async def read_messages(e):
 
 @helper.register(strings.cmd_log)
 async def log_messages(e):
-	super = e.pattern_match.group(1)
+	superl = e.pattern_match.group(1)
 	silent = e.pattern_match.group(2)
 	r = await e.get_reply_message()
 	if not r:
 		await e.reply(strings.reply)
 		return
-	if not super:
+	if not superl:
 		await e.delete()
 		await r.forward_to(config.log_chat)
 		return
@@ -639,7 +639,7 @@ async def log_messages(e):
 		await e.client.forward_messages(config.log_chat, fwd)
 	lf = await e.client.send_message(config.log_chat, strings.cmd_slog_log_from)
 	for msg in _msgs:
-		if type(msg) == Message:
+		if isinstance(msg, Message):
 			msgs.append(msg)
 		if len(msgs) >= 100:
 			await _fwd(msgs)
@@ -684,7 +684,7 @@ async def selfpurge(e):
 		await _purge(_msgs)
 
 @helper.register(strings.cmd_user)
-async def user(e):
+async def user_link(e):
 	r = await e.get_reply_message()
 	if not r:
 		user_id = e.pattern_match.group(1)
@@ -713,14 +713,14 @@ async def admins(e):
 	mention = e.pattern_match.group(1)
 	chat = e.pattern_match.group(2) or e.chat_id
 	chat = await helper.give_user_id(helper.give_chat(chat, await e.get_chat()), e.client)
-	admins = await e.client.get_participants(chat,
+	chat_admins = await e.client.get_participants(chat,
 	filter=types.ChannelParticipantsAdmins())
 	text = strings.cmd_admins_respond
-	for admin in admins:
+	for admin in chat_admins:
 		if not admin.bot and not admin.deleted:
 			text += strings.cmd_admins_sub.format(admin=admin)
 	mtext = strings.cmd_admins_respond
-	for admin in admins:
+	for admin in chat_admins:
 		if not admin.bot and not admin.deleted:
 			mtext += strings.cmd_admins_msub.format(admin=admin)
 	if mention:
