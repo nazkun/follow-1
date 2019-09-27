@@ -24,9 +24,6 @@ async def quick_restart():
 	config.dont_cron = True
 	res_info = helper.restart[0]
 	importlib.reload(helper)
-#	async def async_disabled():
-#		pass
-#	helper.show_restarted = async_disabled
 	helper.restart = [*res_info]
 	class disabled:
 		def __init__(self):
@@ -65,6 +62,8 @@ async def main():
 		await client.connect()
 		me = await client.get_me()
 		helper.followers.append(classes.follower(identifier, client, me, identify[0]))
+		messy_followers = [[fwlr.enu, fwlr] for fwlr in helper.followers]
+		helper.followers = [i[1] for i in sorted(messy_followers)]
 	await asyncio.wait([
 		new_client(i)
 		for i in enumerate(config.followers)
@@ -72,8 +71,6 @@ async def main():
 
 	logging.info('Online!')
 
-	messy_followers = [[fwlr.enu, fwlr] for fwlr in helper.followers]
-	helper.followers = [i[1] for i in sorted(messy_followers)]
 	handlers = []
 	for handler in helper.handlers:
 		handlers.append(handler.__name__)
