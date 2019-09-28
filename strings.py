@@ -14,6 +14,13 @@ speedtest_disabled = 'Speedtest is not enabled!'
 newer_db = 'The database\'s version ({}) is newer than expected ({})'
 reply = 'Reply?'
 
+exception_contents = '''Date: {dt.day}-{dt.month}-{dt.year} (UTC+0)
+Time: {dt.hour}:{dt.minute}.{dt.second}
+
+{traceback}
+Pretty JSON:
+{sexy_json}'''
+
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
 <code>follow help</code>

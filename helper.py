@@ -219,7 +219,11 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 			try:
 				await func(e)
 			except Exception:
-				fyle = memory_file('exception.txt', format_exc())
+				contents = strings.exception_contents.format(
+				traceback=format_exc(), dt=e.date,
+				sexy_json=traverse_json(e.to_json(), None))
+
+				fyle = memory_file('exception.txt', contents)
 				try:
 					if func.flags.noerr:
 						raise Exception
