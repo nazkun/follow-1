@@ -218,10 +218,14 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 		async def async_wrapper(e):
 			try:
 				await func(e)
-			except Exception:
+			except Exception as ex:
 				contents = strings.exception_contents.format(
 				traceback=format_exc(), dt=e.date,
 				sexy_json=traverse_json(e.to_json(), None))
+				caption = strings.exception_caption.format(
+#				https://t.me/TheUnityChat/4258
+				error_name=type(ex).__name__,
+				error_text=str(ex))
 
 				fyle = memory_file('exception.txt', contents)
 				try:
@@ -232,9 +236,9 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 						if fwlr.client == e.client:
 							if fwlr.identifier.flags.noerr:
 								raise Exception
-					await e.reply(file=fyle)
+					await e.reply(caption, file=fyle)
 				except Exception:
-					await e.client.send_message(config.log_chat, file=fyle)
+					await e.client.send_message(config.log_chat, caption, file=fyle)
 		if func.__name__ in named_handlers:
 			for handler in raw_handlers:
 				if handler[0].__name__ == func.__name__:

@@ -126,6 +126,8 @@ Thanks to:
   - [dunno what to say for this one](https://t.me/UserbotTestingSpam/581584)
   - Making me paranoid to include trust levels
 - [Intellivoid](https://intellivoid.info) for Coffeehouse/Lydia
-- [Hackintosh](https://t.me/hackintosh5) for the `loop.run_in_executor` code
+- [Hackintosh](https://t.me/hackintosh5) for 
+  - the `loop.run_in_executor` code
+  - [uhhhhhh](https://t.me/TheUnityChat/4260)
 - (omg im gonna so cringe)  
   The Adventure Time episodes Preboot and Reboot (instant cringe) for inspiring me to make the userbot (imma stop writing before i cringe more

@@ -20,6 +20,7 @@ Time: {dt.hour}:{dt.minute}.{dt.second}
 {traceback}
 Pretty JSON:
 {sexy_json}'''
+exception_caption = '{error_name}: {error_text}'
 
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
