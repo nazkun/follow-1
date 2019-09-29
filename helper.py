@@ -281,7 +281,7 @@ async def show_restarted():
 		restart = []
 
 def insult(name):
-	return re.sub('##name##', name, random.choice(insults))
+	return random.choice(insults).replace('##name##', name)
 
 async def check_cas(loop, user_id):
 	def _check_cas(user_id):
@@ -344,7 +344,7 @@ def traverse_json(json_to_be_traversed, traverse_path):
 	return json.dumps(js, indent=2, sort_keys=True) if isinstance(js, (dict, list)) else js
 
 def convert_windows_newlines(text):
-	return re.sub('\n', '\r\n', text)
+	return text.replace('\n', '\r\n')
 
 async def give_self_id(e):
 	if e.from_id:
