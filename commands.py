@@ -464,7 +464,7 @@ async def admin_report(e):
 @helper.register(strings.cmd_brief)
 async def brief(e):
 	brief_time = e.pattern_match.group(1)
-	brief_time = float(brief_time if brief_time else 1)
+	brief_time = float(brief_time or 1)
 	content = e.pattern_match.group(2)
 	await e.edit(content)
 	await asyncio.sleep(brief_time)
