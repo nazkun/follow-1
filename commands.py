@@ -675,9 +675,6 @@ async def selfpurge(e):
 	max_id=e.id)
 	for msg in msgs:
 		_msgs.add(msg.id)
-		if len(_msgs) >= 100:
-			await _purge(_msgs)
-			_msgs.clear()
 	if _msgs:
 		await _purge(_msgs)
 
