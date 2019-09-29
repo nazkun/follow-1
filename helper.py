@@ -97,6 +97,8 @@ if getattr(config, 'lydia_api', None) and coffeehouse_enabled:
 		return await fut
 	async def lydia_think(loop, session, text):
 		def _lydia_think(session, text):
+			if not text:
+				text = insult('lydia')
 			return session.think_thought(text or 'hi')
 		fut = loop.run_in_executor(None, _lydia_think, session, text)
 		return await fut
