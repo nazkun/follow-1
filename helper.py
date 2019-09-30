@@ -238,9 +238,9 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
 						if fwlr.client == e.client:
 							if fwlr.identifier.flags.noerr:
 								raise Exception
-					await e.reply(caption, file=fyle)
+					await e.reply(caption, file=fyle, parse_mode=None)
 				except Exception:
-					await e.client.send_message(config.log_chat, caption, file=fyle)
+					await e.client.send_message(config.log_chat, caption, file=fyle, parse_mode=None)
 		if func.__name__ in named_handlers:
 			for handler in raw_handlers:
 				if handler[0].__name__ == func.__name__:

@@ -713,11 +713,13 @@ async def admins(e):
 	text = strings.cmd_admins_respond
 	for admin in chat_admins:
 		if not admin.bot and not admin.deleted:
-			text += strings.cmd_admins_sub.format(admin=admin)
+			aname = html.escape(utils.get_display_name(admin))
+			text += strings.cmd_admins_sub.format(admin=admin, aname=aname)
 	mtext = strings.cmd_admins_respond
 	for admin in chat_admins:
 		if not admin.bot and not admin.deleted:
-			mtext += strings.cmd_admins_msub.format(admin=admin)
+			aname = html.escape(utils.get_display_name(admin))
+			mtext += strings.cmd_admins_msub.format(admin=admin, aname=aname)
 	if mention:
 		await e.reply(mtext)
 		return
