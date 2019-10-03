@@ -271,12 +271,12 @@ async def cas(e):
 @helper.register(strings.cmd_afk)
 async def afk(e):
 	helper.afk = e.pattern_match.group(1) or strings.cmd_afk_default
+	helper.afk_responses = dict()
 	await e.reply(strings.cmd_afk_respond)
 
 @helper.register(strings.cmd_unafk)
 async def unafk(e):
 	helper.afk = None
-	helper.afk_responses = dict()
 	await e.reply(strings.cmd_unafk_respond)
 
 @helper.register(events.NewMessage(incoming=True))
