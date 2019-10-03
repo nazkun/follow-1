@@ -349,7 +349,7 @@ cmd_stickertext_help = '''
 	Hides <code>[text]</code> behind the replied sticker
 '''
 
-cmd_selfpurge = r'^follow (?:s(?:elf)?p(?:urge)?|p(?:urge)?me?) (\d+)$'
+cmd_selfpurge = r'^follow (?:s(?:elf)?p(?:urge)?|p(?:urge)?me?)(?: (\d+))?$'
 cmd_selfpurge_help = '''
 <code>follow selfpurge [amount of messages]</code>
 	Purges <code>[amount of messages]</code> that you've sent

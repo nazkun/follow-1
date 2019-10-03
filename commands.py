@@ -670,9 +670,19 @@ async def selfpurge(e):
 	async def _purge(msgs):
 		await e.client.delete_messages(e.chat_id, msgs)
 	_msgs = {e.id}
-	amount = int(e.pattern_match.group(1))
-	msgs = await e.client.get_messages(e.chat_id, limit=amount, from_user='me',
-	max_id=e.id)
+	rid = e.reply_to_msg_id
+	mid = e.pattern_match.group(1)
+	try:
+		amount = int(mid or rid or None)
+	except TypeError:
+		await e.reply(strings.reply)
+		return
+	if mid:
+		msgs = await e.client.get_messages(e.chat_id, limit=amount, from_user='me',
+		max_id=e.id)
+	elif rid:
+		msgs = await e.client.get_messages(e.chat_id, min_id=amount-1, from_user='me',
+		max_id=e.id)
 	for msg in msgs:
 		_msgs.add(msg.id)
 	if _msgs:
