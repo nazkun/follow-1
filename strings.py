@@ -377,3 +377,9 @@ cmd_admins_help = '''
 <code>follow admins</code>
 	Lists the admins in the chat (no mention)
 '''
+
+cmd_purge = r'^follow p(?:urge)?(?: (.+))?$'
+cmd_purge_help = '''
+<code>follow purge [amount of messages]</code>
+	Purges <code>[amount of messages]</code>
+'''
