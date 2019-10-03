@@ -673,7 +673,7 @@ async def selfpurge(e):
 	rid = e.reply_to_msg_id
 	mid = e.pattern_match.group(1)
 	try:
-		amount = int(mid or rid or None)
+		amount = int(mid or rid)
 	except TypeError:
 		await e.reply(strings.reply)
 		return
@@ -745,7 +745,7 @@ async def purge(e):
 	rid = e.reply_to_msg_id
 	mid = e.pattern_match.group(1)
 	try:
-		amount = int(mid or rid or None)
+		amount = int(mid or rid)
 	except TypeError:
 		await e.reply(strings.reply)
 		return
