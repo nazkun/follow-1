@@ -22,6 +22,10 @@ Pretty JSON:
 {sexy_json}'''
 exception_caption = '{error_name}: {error_text}'
 
+help_contents = '''Due to Telegram issues, I need to put a more or less unique number here.
+{}
+'''
+
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
 <code>follow help</code>

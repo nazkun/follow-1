@@ -174,7 +174,7 @@ def give_client(ids_array):
 	return None
 
 def give_help(you):
-	help_text = ''
+	help_text = strings.help_contents.format(random.randint(0, 10**10))
 	for handler in [i[0] for i in you.list_event_handlers()]:
 		if handler.doc:
 			help_text += handler.doc
