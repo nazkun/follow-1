@@ -270,7 +270,7 @@ async def cas(e):
 
 @helper.register(strings.cmd_afk)
 async def afk(e):
-	helper.afk = e.pattern_match.group(1)
+	helper.afk = e.pattern_match.group(1) or strings.cmd_afk_default
 	await e.reply(strings.cmd_afk_respond)
 
 @helper.register(strings.cmd_unafk)

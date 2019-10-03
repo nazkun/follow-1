@@ -202,8 +202,9 @@ cmd_cas_help = '''
 	Uses <a href="https://combot.org/cas">CAS</a>
 '''
 
-cmd_afk = r'^follow afk (.+)$'
+cmd_afk = r'^follow afk(?: (.+))?$'
 cmd_afk_respond = '200: AFK Status Set'
+cmd_afk_default = 'No reason specified'
 im_afk = """I'm currently AFK. Why?
 {}"""
 cmd_afk_help = '''
