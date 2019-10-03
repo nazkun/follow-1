@@ -378,8 +378,14 @@ cmd_admins_help = '''
 	Lists the admins in the chat (no mention)
 '''
 
-cmd_purge = r'^follow p(?:urge)?(?: (.+))?$'
+cmd_purge = r'^follow p(?:urge)?(?: (\d+))?$'
 cmd_purge_help = '''
 <code>follow purge [amount of messages]</code>
 	Purges <code>[amount of messages]</code>
+'''
+
+cmd_delete = r'^follow d(?:el(?:ete)?)?$'
+cmd_delete_help = '''
+<code>follow delete</code>
+	Deletes the replied to message or the last sent message
 '''

@@ -757,3 +757,10 @@ async def purge(e):
 		_msgs.add(msg.id)
 	if _msgs:
 		await _purge(_msgs)
+
+@helper.register(strings.cmd_delete)
+async def delete(e):
+	rid = e.reply_to_msg_id
+	if not rid:
+		rid = (await e.client.get_messages(e.chat_id, limit=1, from_user='me', max_id=e.id))[0].id
+	await e.client.delete_messages(e.chat_id, {e.id, rid})
