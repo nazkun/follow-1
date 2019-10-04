@@ -768,12 +768,16 @@ async def delete(e):
 @helper.register(strings.cmd_edit)
 async def edit(e):
 	await e.delete()
-	r = await e.get_reply_message()
-	if not r:
+	r = None
+	rid = e.reply_to_msg_id
+	if not rid:
 		r = (await e.client.get_messages(e.chat_id, limit=1, from_user='me', max_id=e.id))[0]
+		rid = r.id
 	text = e.pattern_match.group(1)
 	if not text:
+		if not r:
+			r = await e.client.get_messages(e.chat_id, ids=rid)
 		text = strings.cmd_edit_draft.format(r.text)
-		await e.client(functions.messages.SaveDraftRequest(e.chat_id, text, reply_to_msg_id=r.id))
+		await e.client(functions.messages.SaveDraftRequest(e.chat_id, text, reply_to_msg_id=rid))
 		return
-	await r.edit(text)
+	await e.client.edit_message(e.chat_id, rid, text)
