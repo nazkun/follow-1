@@ -22,7 +22,8 @@ Pretty JSON:
 {sexy_json}'''
 exception_caption = '{error_name}: {error_text}'
 
-help_contents = '''Due to Telegram issues, I need to put a more or less unique number here.
+help_contents = '''Please note that some features aren't listed here.
+Due to Telegram issues, I need to put a more or less unique number here.
 {}
 '''
 
@@ -388,4 +389,11 @@ cmd_delete = r'^follow d(?:el(?:ete)?)?$'
 cmd_delete_help = '''
 <code>follow delete</code>
 	Deletes the replied to message or the last sent message
+'''
+
+cmd_edit = r'^follow e(?:dit)?(?:[\n ]([\s\S]+))?$'
+cmd_edit_draft = 'follow e\n{}'
+cmd_edit_help = '''
+<code>follow edit [text]</code>
+	Edits the last sent message with <code>[text]</code>
 '''
