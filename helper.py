@@ -383,3 +383,13 @@ async def run_code(code, e, r, rr):
 		''.join(f'\n {l}'for l in code.split('\n'))
 	)
 	return await locals()['__ex'](e, r, rr)
+
+def restart_handlers():
+	for fwlr in followers:
+		for handler in fwlr.client.list_event_handlers():
+			fwlr.client.remove_event_handler(handler[0])
+		for handler in raw_handlers:
+			if fwlr.identifier.trust >= handler[0].__trust__:
+				if fwlr.identifier.flags.compare(handler[0].flags):
+					for i in handler[1]:
+						fwlr.client.add_event_handler(handler[0], i)
