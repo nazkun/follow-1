@@ -688,7 +688,7 @@ async def selfpurge(e):
 	if _msgs:
 		await _purge(_msgs)
 
-@helper.register(strings.cmd_user)
+@helper.register(strings.cmd_user_link)
 async def user_link(e):
 	r = await e.get_reply_message()
 	if not r:
@@ -702,7 +702,7 @@ async def user_link(e):
 		if r.fwd_from:
 			user_id = r.fwd_from.from_id
 	link = f'tg://user?id={user_id}'
-	await e.reply(strings.cmd_user_respond.format(link=link, user_id=user_id))
+	await e.reply(strings.cmd_user_link_respond.format(link=link, user_id=user_id))
 
 @helper.register(strings.cmd_ping)
 async def ping(e):
