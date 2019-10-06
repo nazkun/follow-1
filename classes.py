@@ -54,6 +54,9 @@ class identify:
 		f'trust={self.trust}, flags={self.flags})')
 		)
 
+	def __iter__(self):
+		return iter([self])
+
 class internal_chat:
 	def __init__(self, actual_chat, chat):
 		self.actual_chat = actual_chat
