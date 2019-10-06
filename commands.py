@@ -140,6 +140,12 @@ async def cli(e):
 async def notes_add(e):
     note = e.pattern_match.group(1)
     content = e.pattern_match.group(2)
+    if not content:
+        r = await e.get_reply_message()
+        if not r:
+            await e.reply(strings.reply)
+            return
+        content = r.text
     helper.db['notes'][note] = content
     if await helper.asave_db(e):
         await e.reply(strings.cmd_notes_add_respond)
@@ -172,6 +178,12 @@ async def notes_list(e):
 async def execnotes_add(e):
     note = e.pattern_match.group(1)
     content = e.pattern_match.group(2)
+    if not content:
+        r = await e.get_reply_message()
+        if not r:
+            await e.reply(strings.reply)
+            return
+        content = html.unescape(r.text)
     helper.db['execnotes'][note] = content
     if await helper.asave_db(e):
         await e.reply(strings.cmd_execnotes_add_respond)
@@ -233,6 +245,12 @@ async def restart(e):
 @helper.register(strings.cmd_exec_py, 50)
 async def exec_py(e):
     code = e.pattern_match.group(1)
+    if not code:
+        r = await e.get_reply_message()
+        if not r:
+            await e.reply(strings.reply)
+            return
+        code = html.unescape(r.text)
     r = await e.reply(strings.cmd_exec_py_processing)
     ret = await helper.run_code(code, e, await e.get_reply_message(), r)
     text = strings.cmd_exec_py_respond

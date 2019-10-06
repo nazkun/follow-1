@@ -92,7 +92,7 @@ cmd_cli_help = '''
     Runs <code>[cli command]</code> (for shell)
 '''
 
-cmd_notes_add = r'^follow n(?:otes?)? (?:add|save) (.+)\n([\s\S]+)$'
+cmd_notes_add = r'^follow n(?:otes?)? (?:add|save) (.+)(?:\n([\s\S]+))?$'
 cmd_notes_add_respond = '200: Operation add note complete'
 cmd_notes_add_help = '''
 <code>follow notes add [name]
@@ -121,7 +121,7 @@ cmd_notes_list_help = '''
     Lists your notes
 '''
 
-cmd_execnotes_add = r'^follow e(?:xec)?n(?:otes?)? (?:add|save) (.+)\n([\s\S]+)$'
+cmd_execnotes_add = r'^follow e(?:xec)?n(?:otes?)? (?:add|save) (.+)(?:\n([\s\S]+))?$'
 cmd_execnotes_add_respond = '200: Operation add execnote complete'
 cmd_execnotes_add_help = '''
 <code>follow execnotes add [name]
@@ -156,7 +156,7 @@ cmd_execnotes_list_help = '''
     Lists your execnotes
 '''
 
-cmd_exec_py = r'^follow exec[ \n]([\s\S]+)$'
+cmd_exec_py = r'^follow exec(?:[ \n]([\s\S]+))?$'
 cmd_exec_py_processing = 'Executing...'
 cmd_exec_py_respond = '200: Executed'
 cmd_exec_py_returned = '''200: Executed, code returned:
