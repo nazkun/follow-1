@@ -27,6 +27,8 @@ Due to Telegram issues, I need to put a more or less unique number here.
 {}
 '''
 
+logadded_text = "<a href='tg://user?id={adder.id}'>{adder_name}</a> added me to {chat.title}"
+
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
 <code>follow help</code>

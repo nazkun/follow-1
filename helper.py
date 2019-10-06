@@ -349,7 +349,7 @@ def convert_windows_newlines(text):
 	return text.replace('\n', '\r\n')
 
 async def give_self_id(e):
-	if e.from_id:
+	if getattr(e, 'from_id', None):
 		return e.from_id
 	for fwlr in followers:
 		if e.client == fwlr.client:

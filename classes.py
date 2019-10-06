@@ -3,7 +3,7 @@ from config import default_flags
 class flags:
 	def __init__(self, disable_defaults=False, *, noall=None, crawler=None,
 	lydia=None, adminreport=None, noerr=None, msgcount=None, ignore=None,
-	flydia=None, afk=None):
+	flydia=None, afk=None, logadded=None):
 		for flag in default_flags:
 			self.__dict__[flag] = default_flags[flag]
 		def iin(flag, rflag):
@@ -21,13 +21,14 @@ class flags:
 		self.ignore = iin('ignore', ignore)
 		self.flydia = iin('flydia', flydia)
 		self.afk = iin('afk', afk)
+		self.logadded = iin('logadded', logadded)
 
 	def __repr__(self):
 		return (f'flags(noall={self.noall}, crawler={self.crawler}, '
 		f'lydia={self.lydia}, adminreport={self.adminreport}, '
 		f'noerr={self.noerr}, msgcount={self.msgcount}, '
 		f'ignore={self.ignore}, flydia={self.flydia}, '
-		f'afk={self.afk})')
+		f'afk={self.afk}, logadded={self.logadded})')
 
 	def compare(self, to_be_compared):
 		for flag in to_be_compared.__dict__.keys():
