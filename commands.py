@@ -159,7 +159,7 @@ async def notes_remove(e):
 async def notes(e):
     note = e.pattern_match.group(1)
     try:
-        await e.reply(helper.db['notes'][note])
+        await e.respond(helper.db['notes'][note], reply_to=e.reply_to_msg_id or e)
     except KeyError:
         await e.reply(strings.cmd_notes_failed.format(note))
 
