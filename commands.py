@@ -2,7 +2,6 @@ import time
 import html
 import asyncio
 import random
-from io import BytesIO
 from traceback import format_exc
 from telethon import utils, events, functions, types, errors
 from telethon.tl.patched import Message
@@ -327,17 +326,16 @@ async def crawler(e):
                 if isinstance(chat_info, (types.ChatInviteAlready, types.ChatInvite)):
                     await asyncio.sleep(random.randint(0, 10))
                     await e.client(functions.messages.ImportChatInviteRequest(invite))
-                    await e.client.send_message(config.log_chat, strings.crawler_joined.format(invite=invite,
+                    await e.client.send_message(config.log_chat,
+                    strings.crawler_joined.format(invite=invite,
                     user=await e.get_sender(), e=e,
                     sanitised_cid=str(e.chat_id)[4:]))
             except errors.UserAlreadyParticipantError:
                 pass
             except Exception:
-                fyle = BytesIO()
-                fyle.name = 'exception.txt'
-                fyle.write(bytes(format_exc(), 'utf-8'))
-                fyle.seek(0)
-                await e.client.send_message(config.log_chat, strings.crawler_failed.format(invite=invite),
+                fyle = helper.memory_file('exception.txt', format_exc())
+                await e.client.send_message(config.log_chat,
+                strings.crawler_failed.format(invite=invite),
                 file=fyle)
 
 @helper.register(strings.cmd_json)

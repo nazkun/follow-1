@@ -90,7 +90,7 @@ if getattr(config, 'lydia_api', None) and coffeehouse_enabled:
                 except (SessionInvalidError, SessionNotFoundError):
                     lydia_sessions[user] = _new_lydia_session()
             else:
-                    lydia_sessions[user] = _new_lydia_session()
+                lydia_sessions[user] = _new_lydia_session()
             return lydia_sessions[user]
 #        Thanks to Hackintosh (httpa://t.me/hackintosh5) for `loop.run_in_executor` code
         fut = loop.run_in_executor(None, _give_lydia_session, user)
@@ -240,7 +240,8 @@ def register(pattern, trust=-float('inf'), doc=None, flags=classes.flags()):
                                 raise Exception
                     await e.reply(caption, file=fyle, parse_mode=None)
                 except Exception:
-                    await e.client.send_message(config.log_chat, caption, file=fyle, parse_mode=None)
+                    await e.client.send_message(config.log_chat, caption,
+                    file=fyle, parse_mode=None)
         if func.__name__ in named_handlers:
             for handler in raw_handlers:
                 if handler[0].__name__ == func.__name__:
@@ -292,7 +293,8 @@ async def check_cas(loop, user_id):
         js_response = json.loads(response.text)
         if not js_response['ok']:
             return js_response['description']
-        return strings.cmd_cas_respond.format(user_id=user_id, offenses=js_response['result']['offenses'])
+        return strings.cmd_cas_respond.format(user_id=user_id,
+        offenses=js_response['result']['offenses'])
     fut = loop.run_in_executor(None, _check_cas, user_id)
     return await fut
 
