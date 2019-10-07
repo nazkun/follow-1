@@ -802,20 +802,18 @@ async def edit(e):
 
 @helper.register(events.ChatAction, flags=flags(True, noerr=True, logadded=True))
 async def logadded(e):
-#    print('chat action')
-    if not e.user_added:
-#        print('not user added')
+    if (not e.user_added) and (not e.created):
         return
     me = await e.client.get_peer_id('me')
     if e.added_by == me:
-#        print('added by me')
         return
     a = e.action_message
-    if me not in a.action.users:
-#        print('not in e users')
-        return
+    if not e.created:
+        if me not in a.action.users:
+            return
     chat = await e.client.get_entity(utils.get_peer_id(a.to_id))
-    adder = await e.get_added_by()
+#    print(a.stringify())
+    adder = await e.client.get_entity(a.from_id)
     adder_name = utils.get_display_name(adder)
     text = strings.logadded_text.format(e=e, chat=chat, adder=adder, adder_name=adder_name)
     await e.client.send_message(config.log_chat, text)
