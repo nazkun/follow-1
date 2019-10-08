@@ -180,11 +180,11 @@ def give_help(you):
             help_text += handler.doc
     return help_text
 
-async def execute_cli(command):
+async def execute_cli(command, stdin=None):
 #    https://t.me/TheUnityChat/5428
     pipe = asyncio.subprocess.PIPE
-    process = await asyncio.create_subprocess_shell(command, stdout=pipe, stderr=pipe, stdin=stdin)
-    so, se = await process.communicate()
+    process = await asyncio.create_subprocess_shell(command, stdout=pipe, stderr=pipe, stdin=pipe)
+    so, se = await process.communicate(stdin.encode('utf-8') if stdin else None)
     text = ''
     if se:
         text += se.decode()

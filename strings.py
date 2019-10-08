@@ -85,7 +85,7 @@ cmd_speedtest_help = '''
     Does a speedtest
 '''
 
-cmd_cli = r'^follow cli (.+)$'
+cmd_cli = r'^follow cli (.+)(?:\n([\s\S]+))?$'
 cmd_cli_respond = '200: Executed'
 cmd_cli_help = '''
 <code>follow cli [cli command]</code>

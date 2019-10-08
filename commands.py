@@ -129,7 +129,8 @@ async def speedtest(e):
 @helper.register(strings.cmd_cli, 50)
 async def cli(e):
     command = e.pattern_match.group(1)
-    output = html.escape(await helper.execute_cli(command))
+    stdin = e.pattern_match.group(2)
+    output = html.escape(await helper.execute_cli(command, stdin))
     if output:
         await e.reply('<code>' + output + '</code>')
     else:
