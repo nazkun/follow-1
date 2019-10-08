@@ -123,6 +123,7 @@ Thanks to:
 - [lonami](https://lonami.dev) for creating [Telethon](https://github.com/lonamiwebs/Telethon)
 - [twitface](https://t.me/twitface) for:
   - Giving his old exec code (it's old but... still works nicely)
+  - Giving his shell ecevute code (https://t.me/TheUnityChat/5428)
   - [dunno what to say for this one](https://t.me/UserbotTestingSpam/581584)
   - Making me paranoid to include trust levels
 - [Intellivoid](https://intellivoid.info) for Coffeehouse/Lydia

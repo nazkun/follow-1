@@ -180,16 +180,16 @@ def give_help(you):
             help_text += handler.doc
     return help_text
 
-async def execute_cli(command, loop):
-    def _execute_cli(command):
-        command = command.split(' ')
-        try:
-            output = subprocess.check_output(command,
-            universal_newlines=True, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as error:
-            output = error.output
-        return output
-    return await loop.run_in_executor(None, _execute_cli, command)
+async def execute_cli(command):
+#    https://t.me/TheUnityChat/5428
+    pipe = asyncio.subprocess.PIPE
+    process = await asyncio.create_subprocess_shell(command, stdout=pipe, stderr=pipe, stdin=stdin)
+    so, se = await process.communicate()
+    text = ''
+    if se:
+        text += se.decode()
+    text += so.decode()
+    return text
 
 def memory_file(file_name, file_content):
     fyle = BytesIO()
