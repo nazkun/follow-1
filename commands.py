@@ -450,8 +450,9 @@ async def admin_report(e):
 #        No recursion please
         return
     reporter = await e.get_sender()
+    reporter_name = html.escape(utils.get_display_name(reporter))
     chat = await e.get_chat()
-    if not chat.username:
+    if not getattr(chat, 'username', None):
         unmark_cid = await e.client.get_peer_id(chat.id, False)
         link = f'https://t.me/c/{unmark_cid}/{e.id}'
     else:
@@ -460,23 +461,25 @@ async def admin_report(e):
         r = await e.get_reply_message()
         try:
             reportee = await r.get_sender()
+            reportee_name = html.escape(utils.get_display_name(reportee))
         except AttributeError:
             await e.client.send_message(config.log_chat,
             strings.admin_report_no_reportee.format(
             reporter=reporter, chat=chat, e=e,
-            remark=html.escape(str(e.text)), link=link),
+            remark=html.escape(str(e.text)), link=link,
+            reporter_name=reporter_name),
             link_preview=False)
             return
 
         await e.client.send_message(config.log_chat, strings.admin_report.format(
         reporter=reporter, reportee=reportee, chat=chat, e=e, r=r,
         remark=html.escape(str(e.text)), link=link,
-        reported_message=html.escape(str(r.text))),
-        link_preview=False)
+        reported_message=html.escape(str(r.text)), reporter_name=reporter_name,
+        reportee_name=reportee_name), link_preview=False)
     else:
         await e.client.send_message(config.log_chat, strings.admin_report_no_reportee.format(
         reporter=reporter, chat=chat, e=e, remark=html.escape(str(e.text)),
-        link=link), link_preview=False)
+        link=link, reporter_name=reporter_name), link_preview=False)
 
 @helper.register(strings.cmd_brief)
 async def brief(e):

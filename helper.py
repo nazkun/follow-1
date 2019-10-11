@@ -128,7 +128,7 @@ async def list_followers():
 
 def give_chat(chat, original_chat):
     if chat == strings.here_chat:
-        if original_chat.username:
+        if getattr(original_chat, 'username', None):
             return original_chat.username
         return original_chat.id
     for chat_name in config.internal_chat_names:

@@ -27,7 +27,8 @@ Due to Telegram issues, I need to put a more or less unique number here.
 {}
 '''
 
-logadded_text = "<a href='tg://user?id={adder.id}'>{adder_name}</a> added me to {chat.title}"
+logadded_text = """#ADDED
+<a href='tg://user?id={adder.id}'>{adder_name}</a> added me to {chat.title}"""
 
 cmd_help_text = r'^follow help(?: (.+))?$'
 cmd_help_text_help = '''
@@ -265,17 +266,17 @@ cmd_lydia_disable_help = '''
 '''
 
 cmd_admin_report = r'@admins?|^[/\.!#](?:report|admins?)(?:$|\W)'
-admin_report = '''Admin report!
+admin_report = '''#ADMINREPORT!
 
-<a href='{link}'>Chat</a>: <code>{chat.id}</code>
-<a href='tg://user?id={reporter.id}'>Reporter</a>: <code>{reporter.id}</code>
-<a href='tg://user?id={reportee.id}'>Reportee</a>: <code>{reportee.id}</code>
+<a href='{link}'>Chat</a>: {chat.title} (<code>{chat.id}</code>)
+<a href='tg://user?id={reporter.id}'>Reporter</a>: {reporter_name} (<code>{reporter.id}</code>)
+<a href='tg://user?id={reportee.id}'>Reportee</a>: {reportee_name} (<code>{reportee.id}</code>)
 Remark: <code>{remark}</code>
 Reported Message: <code>{reported_message}</code>'''
-admin_report_no_reportee = '''Admin report!
+admin_report_no_reportee = '''#ADMINREPORT!
 
-<a href='{link}'>Chat</a>: <code>{chat.id}</code>
-<a href='tg://user?id={reporter.id}'>Reporter</a>: <code>{reporter.id}</code>
+<a href='{link}'>Chat</a>: {chat.title} (<code>{chat.id}</code>)
+<a href='tg://user?id={reporter.id}'>Reporter</a>: {reporter_name} (<code>{reporter.id}</code>)
 Remark: <code>{remark}</code>'''
 
 cmd_brief = r'^follow brief(?: (.+))?\n([\s\S]+)$'
